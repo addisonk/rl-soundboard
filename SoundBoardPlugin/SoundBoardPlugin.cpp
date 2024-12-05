@@ -8,7 +8,7 @@
 #include <Lmcons.h>
 
 
-BAKKESMOD_PLUGIN(SoundBoardPlugin, "A soundboard plugin who plays custom sounds when game events", "1.2.0", PLUGINTYPE_FREEPLAY)
+BAKKESMOD_PLUGIN(SoundBoardPlugin, "SoundBoardPlugin", "1.2.0", PLUGINTYPE_FREEPLAY)
 
 std::shared_ptr<CVarManagerWrapper> _globalCvarManager;
 
