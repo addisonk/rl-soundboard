@@ -1,0 +1,338 @@
+name: Build SoundBoard BakkesMod Plugin
+
+# 🚀 OPTIMIZED: Only trigger builds when source code changes
+on:
+  push:
+    branches: [main]
+    paths:
+      - "SoundBoardPlugin/**"
+      - ".github/workflows/**"
+      - ".github/templates/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "SoundBoardPlugin/**"
+      - ".github/workflows/**"
+      - ".github/templates/**"
+
+# 🔧 FIX: Add write permissions for git operations (version management)
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  build:
+    # 🎯 CRITICAL: Must use Windows for BakkesMod compatibility
+    runs-on: windows-latest
+
+    steps:
+      # Get Mac-developed code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 🚀 OPTIMIZATION: Cache BakkesMod SDK to save 2-3 minutes per build
+      - name: Cache BakkesMod SDK
+        id: cache-bakkesmod-sdk
+        uses: actions/cache@v4
+        with:
+          path: BakkesModSDK-master
+          key: bakkesmod-sdk-${{ hashFiles('**/build.yml') }}
+          restore-keys: bakkesmod-sdk-
+
+      # Setup Windows build environment
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup VS Dev Environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      # Download BakkesMod SDK only if not cached
+      - name: Setup BakkesMod SDK
+        run: |
+          if (!(Test-Path "BakkesModSDK-master")) {
+            Write-Host "📥 Downloading BakkesMod SDK..."
+            Invoke-WebRequest -Uri "https://github.com/bakkesmodorg/BakkesModSDK/archive/refs/heads/master.zip" -OutFile "bmsdk.zip"
+            Expand-Archive -Path "bmsdk.zip" -DestinationPath "."
+            Write-Host "✅ BakkesMod SDK downloaded and extracted"
+          } else {
+            Write-Host "✅ BakkesMod SDK restored from cache"
+          }
+          echo "BAKKESMODSDK=$(pwd)/BakkesModSDK-master" >> $env:GITHUB_ENV
+
+          # Verify SDK structure
+          Write-Host "=== BakkesMod SDK Structure Verification ==="
+          if (Test-Path "BakkesModSDK-master/include") {
+            Write-Host "✅ Include directory found"
+            Get-ChildItem -Path "BakkesModSDK-master/include" -Recurse | Where-Object Name -like "*.h" | Select-Object FullName | Select-Object -First 5
+          } else {
+            Write-Host "❌ ERROR: Include directory not found!"
+            exit 1
+          }
+
+          if (Test-Path "BakkesModSDK-master/lib") {
+            Write-Host "✅ Lib directory found"
+            Get-ChildItem -Path "BakkesModSDK-master/lib" | Select-Object Name
+          } else {
+            Write-Host "❌ ERROR: Lib directory not found!"
+            exit 1
+          }
+
+      # 🚀 OPTIMIZATION: Cache build dependencies
+      - name: Cache Build Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            BakkesModSDK-master/PluginFiles/
+            build/
+            x64/
+          key: build-cache-${{ hashFiles('SoundBoardPlugin/**/*.cpp', 'SoundBoardPlugin/**/*.h', '.github/templates/plugin.vcxproj.template') }}
+
+      # Setup project structure in SDK
+      - name: Setup Plugin in SDK Structure
+        run: |
+          Write-Host "🔧 Setting up SoundBoard plugin structure in BakkesMod SDK..."
+          $pluginDir = "BakkesModSDK-master/PluginFiles/SoundBoardPlugin"
+          New-Item -ItemType Directory -Force -Path $pluginDir
+
+          # Copy all plugin files to SDK structure with correct name
+          Copy-Item "SoundBoardPlugin/*" $pluginDir -Recurse -Force
+
+          Write-Host "✅ SoundBoard plugin files copied to SDK structure"
+          Write-Host "=== Plugin Directory Contents ==="
+          Get-ChildItem -Path $pluginDir | Select-Object Name, Length
+
+      # 🔢 AUTOMATIC VERSION INCREMENTING: Only increment after build success
+      - name: Auto-increment Version (Pre-build)
+        id: version-increment
+        run: |
+          $versionFile = "BakkesModSDK-master/PluginFiles/SoundBoardPlugin/version.h"
+          Write-Host "📈 Checking version file: $versionFile"
+
+          if (Test-Path $versionFile) {
+            $content = Get-Content $versionFile
+            $buildLine = $content | Select-String "#define VERSION_BUILD"
+            if ($buildLine) {
+              $currentBuild = [int]($buildLine -replace ".*VERSION_BUILD\s+", "")
+              $newBuild = $currentBuild + 1
+              $content = $content -replace "#define VERSION_BUILD\s+\d+", "#define VERSION_BUILD $newBuild"
+              $content | Set-Content $versionFile
+              Write-Host "✅ Auto-incremented version from $currentBuild to $newBuild"
+              echo "OLD_VERSION=$currentBuild" >> $env:GITHUB_OUTPUT
+              echo "NEW_VERSION=$newBuild" >> $env:GITHUB_OUTPUT
+              echo "VERSION_UPDATED=true" >> $env:GITHUB_OUTPUT
+            } else {
+              Write-Host "❌ VERSION_BUILD not found in version.h"
+              echo "VERSION_UPDATED=false" >> $env:GITHUB_OUTPUT
+            }
+          } else {
+            Write-Host "❌ version.h file not found!"
+            echo "VERSION_UPDATED=false" >> $env:GITHUB_OUTPUT
+          }
+
+      # Generate vcxproj from template
+      - name: Generate Project File
+        run: |
+          Write-Host "📄 Generating SoundBoardPlugin.vcxproj file from template..."
+          $templatePath = ".github/templates/plugin.vcxproj.template"
+          $outputPath = "BakkesModSDK-master/PluginFiles/SoundBoardPlugin/SoundBoardPlugin.vcxproj"
+
+          if (Test-Path $templatePath) {
+            $content = Get-Content -Path $templatePath -Raw
+            $content | Out-File -FilePath $outputPath -Encoding UTF8
+            Write-Host "✅ SoundBoardPlugin project file generated successfully"
+          } else {
+            Write-Host "❌ ERROR: Template file not found at $templatePath"
+            exit 1
+          }
+
+      # 🎯 CRITICAL: Build the plugin with comprehensive error handling
+      - name: Build Plugin
+        id: build-plugin
+        run: |
+          Write-Host "🔨 Building SoundBoard BakkesMod Plugin..."
+          cd BakkesModSDK-master/PluginFiles/SoundBoardPlugin
+
+          # Build with comprehensive error handling
+          try {
+            msbuild SoundBoardPlugin.vcxproj /p:Configuration=Release /p:Platform=x64 /p:PreferredToolArchitecture=x64 /m /v:minimal
+            
+            if ($LASTEXITCODE -eq 0) {
+              Write-Host "✅ Build completed successfully!"
+              echo "BUILD_SUCCESS=true" >> $env:GITHUB_OUTPUT
+              
+              # Verify output files
+              if (Test-Path "Release/SoundBoardPlugin.dll") {
+                Write-Host "✅ SoundBoardPlugin.dll generated successfully"
+                $dllSize = (Get-Item "Release/SoundBoardPlugin.dll").Length
+                Write-Host "📦 DLL Size: $dllSize bytes"
+              } else {
+                Write-Host "❌ ERROR: SoundBoardPlugin.dll not found after build!"
+                echo "BUILD_SUCCESS=false" >> $env:GITHUB_OUTPUT
+                exit 1
+              }
+            } else {
+              Write-Host "❌ Build failed with exit code: $LASTEXITCODE"
+              echo "BUILD_SUCCESS=false" >> $env:GITHUB_OUTPUT
+              exit 1
+            }
+          } catch {
+            Write-Host "❌ Build failed with exception: $_"
+            echo "BUILD_SUCCESS=false" >> $env:GITHUB_OUTPUT
+            exit 1
+          }
+
+      # 🎯 CRITICAL: Upload plugin artifacts with unique names
+      - name: Upload Plugin Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: SoundBoardPlugin-Release-${{ github.sha }}
+          path: |
+            BakkesModSDK-master/PluginFiles/SoundBoardPlugin/Release/*.dll
+            BakkesModSDK-master/PluginFiles/SoundBoardPlugin/Release/*.pdb
+            BakkesModSDK-master/PluginFiles/SoundBoardPlugin/version.h
+          retention-days: 30
+
+      # 🚀 BUILD SUCCESS VERIFICATION: Commit version update after successful build
+      - name: Commit Version Update
+        if: steps.build-plugin.outputs.BUILD_SUCCESS == 'true' && steps.version-increment.outputs.VERSION_UPDATED == 'true'
+        run: |
+          Write-Host "📝 Committing version update after successful build..."
+
+          # Copy updated version.h back to source
+          Copy-Item "BakkesModSDK-master/PluginFiles/SoundBoardPlugin/version.h" "SoundBoardPlugin/version.h" -Force
+
+          # Configure git
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Commit version update
+          git add SoundBoardPlugin/version.h
+          git commit -m "Auto-increment version to 1.0.0.${{ steps.version-increment.outputs.NEW_VERSION }}
+
+          - Successful build verified ✅
+          - Auto-incremented VERSION_BUILD from ${{ steps.version-increment.outputs.OLD_VERSION }} to ${{ steps.version-increment.outputs.NEW_VERSION }}
+          - SoundBoard plugin ready for deployment
+          - Build artifacts: SoundBoardPlugin-Release-${{ github.sha }}"
+
+          git push origin HEAD:main
+          Write-Host "✅ Version update committed and pushed"
+
+      # 🚀 AUTO-TAGGING: Create version tag after successful build
+      - name: Create Version Tag
+        if: steps.build-plugin.outputs.BUILD_SUCCESS == 'true' && steps.version-increment.outputs.VERSION_UPDATED == 'true'
+        run: |
+          $newVersion = "v1.0.0.${{ steps.version-increment.outputs.NEW_VERSION }}"
+          Write-Host "🏷️ Creating version tag: $newVersion"
+
+          git tag $newVersion
+          git push origin $newVersion
+          Write-Host "✅ Version tag $newVersion created and pushed"
+
+      # 🎉 BUILD SUMMARY: Provide comprehensive build results
+      - name: Build Summary
+        if: always()
+        run: |
+          Write-Host "========================================"
+          Write-Host "🎯 SOUNDBOARD PLUGIN BUILD SUMMARY"
+          Write-Host "========================================"
+          Write-Host "Repository: ${{ github.repository }}"
+          Write-Host "Commit SHA: ${{ github.sha }}"
+          Write-Host "Build Number: ${{ github.run_number }}"
+          Write-Host "Build Success: ${{ steps.build-plugin.outputs.BUILD_SUCCESS }}"
+          Write-Host "Version Updated: ${{ steps.version-increment.outputs.VERSION_UPDATED }}"
+
+          if ("${{ steps.version-increment.outputs.VERSION_UPDATED }}" -eq "true") {
+            Write-Host "Old Version: 1.0.0.${{ steps.version-increment.outputs.OLD_VERSION }}"
+            Write-Host "New Version: 1.0.0.${{ steps.version-increment.outputs.NEW_VERSION }}"
+          }
+
+          Write-Host "Artifact Name: SoundBoardPlugin-Release-${{ github.sha }}"
+          Write-Host "========================================"
+
+          if ("${{ steps.build-plugin.outputs.BUILD_SUCCESS }}" -eq "true") {
+            Write-Host "🎉 BUILD COMPLETED SUCCESSFULLY!"
+            Write-Host "📦 Download artifacts from: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            Write-Host "🚀 SoundBoard plugin ready for deployment to BakkesMod!"
+          } else {
+            Write-Host "❌ BUILD FAILED - Check logs for details"
+            Write-Host "🔍 Use GitHub CLI for error investigation:"
+            Write-Host "   gh run download --name 'SoundBoardPlugin-Release-${{ github.sha }}'"
+            Write-Host "   gh run view ${{ github.run_id }} --log"
+          }
+          Write-Host "========================================"
+
+  # 🔍 ERROR INVESTIGATION JOB: Separate job for comprehensive error analysis
+  error-investigation:
+    runs-on: ubuntu-latest
+    needs: build
+    if: failure()
+
+    steps:
+      - name: Comprehensive Build Error Investigation
+        run: |
+          echo "🚨 BUILD FAILED - INITIATING ERROR INVESTIGATION"
+          echo "================================================="
+          echo "Repository: ${{ github.repository }}"
+          echo "Run ID: ${{ github.run_id }}"
+          echo "Commit SHA: ${{ github.sha }}"
+          echo "================================================="
+
+          # Install GitHub CLI
+          curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+          sudo apt update
+          sudo apt install gh -y
+
+          # Authenticate with GitHub CLI using GITHUB_TOKEN
+          echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+
+          # Get detailed job failure information
+          echo "🔍 ANALYZING FAILED JOBS:"
+          gh run view ${{ github.run_id }} --json jobs --jq '.jobs[] | select(.conclusion == "failure") | {name: .name, conclusion: .conclusion, steps: [.steps[] | select(.conclusion != "success") | {name: .name, conclusion: .conclusion}]}'
+
+          echo ""
+          echo "📋 FAILED STEPS ANALYSIS:"
+          gh run view ${{ github.run_id }} --json jobs --jq '.jobs[] | select(.conclusion == "failure") | .steps[] | select(.conclusion != "success") | "❌ Step: \(.name) - Status: \(.conclusion)"'
+
+          echo ""
+          echo "🔗 INVESTIGATION COMMANDS FOR DEVELOPERS:"
+          echo "==========================================="
+          echo "# Download build logs for local analysis:"
+          echo "gh run download ${{ github.run_id }} --name 'build-logs' || echo 'No build logs artifact'"
+          echo ""
+          echo "# View detailed build logs:"
+          echo "gh run view ${{ github.run_id }} --log"
+          echo ""
+          echo "# Get specific job logs:"
+          echo "gh run view ${{ github.run_id }} --log --job build"
+          echo ""
+          echo "# Check commit details:"
+          echo "gh api '/repos/${{ github.repository }}/commits/${{ github.sha }}'"
+          echo "==========================================="
+
+          echo "🚨 Use these commands to investigate and fix the build failure!"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # 🎉 SUCCESS NOTIFICATION JOB: Celebrate successful builds
+  success-notification:
+    runs-on: ubuntu-latest
+    needs: build
+    if: success()
+
+    steps:
+      - name: Success Celebration
+        run: |
+          echo "🎉 SOUNDBOARD PLUGIN BUILD SUCCESS!"
+          echo "====================================="
+          echo "✅ Build completed successfully"
+          echo "✅ SoundBoardPlugin.dll generated"
+          echo "✅ Version auto-incremented"
+          echo "✅ Artifacts uploaded"
+          echo "====================================="
+          echo "📦 Artifact: SoundBoardPlugin-Release-${{ github.sha }}"
+          echo "🔗 Download: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "🚀 Ready for deployment to BakkesMod!"
+          echo "====================================="
