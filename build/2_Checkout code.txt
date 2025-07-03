@@ -1,57 +1,57 @@
-﻿2025-07-03T01:33:53.8479634Z ##[group]Run actions/checkout@v4
-2025-07-03T01:33:53.8480824Z with:
-2025-07-03T01:33:53.8481280Z   repository: addisonk/rl-soundboard
-2025-07-03T01:33:53.8482034Z   token: ***
-2025-07-03T01:33:53.8482457Z   ssh-strict: true
-2025-07-03T01:33:53.8482877Z   ssh-user: git
-2025-07-03T01:33:53.8483375Z   persist-credentials: true
-2025-07-03T01:33:53.8483858Z   clean: true
-2025-07-03T01:33:53.8484298Z   sparse-checkout-cone-mode: true
-2025-07-03T01:33:53.8484826Z   fetch-depth: 1
-2025-07-03T01:33:53.8485240Z   fetch-tags: false
-2025-07-03T01:33:53.8485674Z   show-progress: true
-2025-07-03T01:33:53.8486021Z   lfs: false
-2025-07-03T01:33:53.8486340Z   submodules: false
-2025-07-03T01:33:53.8486695Z   set-safe-directory: true
-2025-07-03T01:33:53.8487282Z ##[endgroup]
-2025-07-03T01:33:54.0109017Z Syncing repository: addisonk/rl-soundboard
-2025-07-03T01:33:54.0110692Z ##[group]Getting Git version info
-2025-07-03T01:33:54.0111316Z Working directory is 'D:\a\rl-soundboard\rl-soundboard'
-2025-07-03T01:33:54.1039319Z [command]"C:\Program Files\Git\bin\git.exe" version
-2025-07-03T01:33:54.4012829Z git version 2.50.0.windows.1
-2025-07-03T01:33:54.4062328Z ##[endgroup]
-2025-07-03T01:33:54.4085667Z Temporarily overriding HOME='D:\a\_temp\4204e19c-0bf1-4a33-a323-af2c814bbf2d' before making global git config changes
-2025-07-03T01:33:54.4088940Z Adding repository directory to the temporary git global config as a safe directory
-2025-07-03T01:33:54.4098366Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\rl-soundboard\rl-soundboard
-2025-07-03T01:33:54.4617865Z Deleting the contents of 'D:\a\rl-soundboard\rl-soundboard'
-2025-07-03T01:33:54.4622872Z ##[group]Initializing the repository
-2025-07-03T01:33:54.4632833Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\rl-soundboard\rl-soundboard
-2025-07-03T01:33:54.5265391Z Initialized empty Git repository in D:/a/rl-soundboard/rl-soundboard/.git/
-2025-07-03T01:33:54.5302139Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/addisonk/rl-soundboard
-2025-07-03T01:33:54.5779651Z ##[endgroup]
-2025-07-03T01:33:54.5780509Z ##[group]Disabling automatic garbage collection
-2025-07-03T01:33:54.5781289Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
-2025-07-03T01:33:54.5998772Z ##[endgroup]
-2025-07-03T01:33:54.5999588Z ##[group]Setting up auth
-2025-07-03T01:33:54.6012356Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
-2025-07-03T01:33:54.6230471Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
-2025-07-03T01:33:55.8728663Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
-2025-07-03T01:33:55.8952945Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
-2025-07-03T01:33:56.2993720Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
-2025-07-03T01:33:56.3221995Z ##[endgroup]
-2025-07-03T01:33:56.3222662Z ##[group]Fetching the repository
-2025-07-03T01:33:56.3235529Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +9ecc918ff101250a02848bb30ba48331d8e881d9:refs/remotes/origin/main
-2025-07-03T01:33:57.5893899Z From https://github.com/addisonk/rl-soundboard
-2025-07-03T01:33:57.5895105Z  * [new ref]         9ecc918ff101250a02848bb30ba48331d8e881d9 -> origin/main
-2025-07-03T01:33:57.6084101Z ##[endgroup]
-2025-07-03T01:33:57.6084543Z ##[group]Determining the checkout info
-2025-07-03T01:33:57.6087995Z ##[endgroup]
-2025-07-03T01:33:57.6103270Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
-2025-07-03T01:33:57.6466475Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
-2025-07-03T01:33:57.6681579Z ##[group]Checking out the ref
-2025-07-03T01:33:57.6689444Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B main refs/remotes/origin/main
-2025-07-03T01:33:57.9116759Z branch 'main' set up to track 'origin/main'.
-2025-07-03T01:33:57.9121136Z Switched to a new branch 'main'
-2025-07-03T01:33:57.9162946Z ##[endgroup]
-2025-07-03T01:33:57.9459105Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
-2025-07-03T01:33:57.9647709Z 9ecc918ff101250a02848bb30ba48331d8e881d9
+﻿2025-07-03T01:37:43.7816035Z ##[group]Run actions/checkout@v4
+2025-07-03T01:37:43.7817407Z with:
+2025-07-03T01:37:43.7818105Z   repository: addisonk/rl-soundboard
+2025-07-03T01:37:43.7819299Z   token: ***
+2025-07-03T01:37:43.7819952Z   ssh-strict: true
+2025-07-03T01:37:43.7820625Z   ssh-user: git
+2025-07-03T01:37:43.7821328Z   persist-credentials: true
+2025-07-03T01:37:43.7822095Z   clean: true
+2025-07-03T01:37:43.7822796Z   sparse-checkout-cone-mode: true
+2025-07-03T01:37:43.7823629Z   fetch-depth: 1
+2025-07-03T01:37:43.7824295Z   fetch-tags: false
+2025-07-03T01:37:43.7825017Z   show-progress: true
+2025-07-03T01:37:43.7825750Z   lfs: false
+2025-07-03T01:37:43.7826392Z   submodules: false
+2025-07-03T01:37:43.7827094Z   set-safe-directory: true
+2025-07-03T01:37:43.7828049Z ##[endgroup]
+2025-07-03T01:37:43.9528596Z Syncing repository: addisonk/rl-soundboard
+2025-07-03T01:37:43.9531011Z ##[group]Getting Git version info
+2025-07-03T01:37:43.9532139Z Working directory is 'D:\a\rl-soundboard\rl-soundboard'
+2025-07-03T01:37:44.0538777Z [command]"C:\Program Files\Git\bin\git.exe" version
+2025-07-03T01:37:44.3089194Z git version 2.50.0.windows.1
+2025-07-03T01:37:44.3138331Z ##[endgroup]
+2025-07-03T01:37:44.3159631Z Temporarily overriding HOME='D:\a\_temp\87daa5ac-273f-48c8-a079-5002d1c79858' before making global git config changes
+2025-07-03T01:37:44.3161851Z Adding repository directory to the temporary git global config as a safe directory
+2025-07-03T01:37:44.3171432Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\rl-soundboard\rl-soundboard
+2025-07-03T01:37:44.3595182Z Deleting the contents of 'D:\a\rl-soundboard\rl-soundboard'
+2025-07-03T01:37:44.3600486Z ##[group]Initializing the repository
+2025-07-03T01:37:44.3610480Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\rl-soundboard\rl-soundboard
+2025-07-03T01:37:44.4187602Z Initialized empty Git repository in D:/a/rl-soundboard/rl-soundboard/.git/
+2025-07-03T01:37:44.4229884Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/addisonk/rl-soundboard
+2025-07-03T01:37:44.4660136Z ##[endgroup]
+2025-07-03T01:37:44.4661499Z ##[group]Disabling automatic garbage collection
+2025-07-03T01:37:44.4670376Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2025-07-03T01:37:44.4906042Z ##[endgroup]
+2025-07-03T01:37:44.4907327Z ##[group]Setting up auth
+2025-07-03T01:37:44.4919950Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2025-07-03T01:37:44.5154016Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2025-07-03T01:37:45.5603792Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-07-03T01:37:45.5840859Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2025-07-03T01:37:46.0347081Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2025-07-03T01:37:46.0572343Z ##[endgroup]
+2025-07-03T01:37:46.0573274Z ##[group]Fetching the repository
+2025-07-03T01:37:46.0586994Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +4c3bb2beae349aebbf703de70db0027febe04455:refs/remotes/origin/main
+2025-07-03T01:37:47.5383914Z From https://github.com/addisonk/rl-soundboard
+2025-07-03T01:37:47.5385060Z  * [new ref]         4c3bb2beae349aebbf703de70db0027febe04455 -> origin/main
+2025-07-03T01:37:47.5566500Z ##[endgroup]
+2025-07-03T01:37:47.5566959Z ##[group]Determining the checkout info
+2025-07-03T01:37:47.5570250Z ##[endgroup]
+2025-07-03T01:37:47.5586071Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2025-07-03T01:37:47.5923646Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2025-07-03T01:37:47.6138282Z ##[group]Checking out the ref
+2025-07-03T01:37:47.6147124Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B main refs/remotes/origin/main
+2025-07-03T01:37:47.8586103Z branch 'main' set up to track 'origin/main'.
+2025-07-03T01:37:47.8591140Z Switched to a new branch 'main'
+2025-07-03T01:37:47.8636721Z ##[endgroup]
+2025-07-03T01:37:47.8928726Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2025-07-03T01:37:47.9124694Z 4c3bb2beae349aebbf703de70db0027febe04455

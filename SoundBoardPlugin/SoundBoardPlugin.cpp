@@ -24,14 +24,27 @@ void SoundBoardPlugin::onLoad()
 // Register CVars for configurable sound paths
 void SoundBoardPlugin::RegisterCVars()
 {
-    // Register CVars for each sound event with default values
-    soundGoalPath = cvarManager->registerCvar("soundboard_goal_path", "goal.wav", "Path to goal sound file (relative to sounds folder)", true, true, 0.0, true, 1.0);
-    soundSavePath = cvarManager->registerCvar("soundboard_save_path", "save.wav", "Path to save sound file (relative to sounds folder)", true, true, 0.0, true, 1.0);
-    soundDemolitionPath = cvarManager->registerCvar("soundboard_demolition_path", "demolition.wav", "Path to demolition sound file (relative to sounds folder)", true, true, 0.0, true, 1.0);
-    soundMVPPath = cvarManager->registerCvar("soundboard_mvp_path", "mvp.wav", "Path to MVP sound file (relative to sounds folder)", true, true, 0.0, true, 1.0);
-    soundAerialGoalPath = cvarManager->registerCvar("soundboard_aerial_goal_path", "aerial_goal.wav", "Path to aerial goal sound file (relative to sounds folder)", true, true, 0.0, true, 1.0);
-    soundEpicSavePath = cvarManager->registerCvar("soundboard_epic_save_path", "epic_save.wav", "Path to epic save sound file (relative to sounds folder)", true, true, 0.0, true, 1.0);
-    soundCrossbarPath = cvarManager->registerCvar("soundboard_crossbar_path", "crossbar.wav", "Path to crossbar hit sound file (relative to sounds folder)", true, true, 0.0, true, 1.0);
+    // Register CVars for each sound event with default values and wrap in shared_ptr
+    auto goalCvar = cvarManager->registerCvar("soundboard_goal_path", "goal.wav", "Path to goal sound file (relative to sounds folder)", true, true, 0.0, true, 1.0);
+    soundGoalPath = std::make_shared<CVarWrapper>(goalCvar);
+    
+    auto saveCvar = cvarManager->registerCvar("soundboard_save_path", "save.wav", "Path to save sound file (relative to sounds folder)", true, true, 0.0, true, 1.0);
+    soundSavePath = std::make_shared<CVarWrapper>(saveCvar);
+    
+    auto demoCvar = cvarManager->registerCvar("soundboard_demolition_path", "demolition.wav", "Path to demolition sound file (relative to sounds folder)", true, true, 0.0, true, 1.0);
+    soundDemolitionPath = std::make_shared<CVarWrapper>(demoCvar);
+    
+    auto mvpCvar = cvarManager->registerCvar("soundboard_mvp_path", "mvp.wav", "Path to MVP sound file (relative to sounds folder)", true, true, 0.0, true, 1.0);
+    soundMVPPath = std::make_shared<CVarWrapper>(mvpCvar);
+    
+    auto aerialCvar = cvarManager->registerCvar("soundboard_aerial_goal_path", "aerial_goal.wav", "Path to aerial goal sound file (relative to sounds folder)", true, true, 0.0, true, 1.0);
+    soundAerialGoalPath = std::make_shared<CVarWrapper>(aerialCvar);
+    
+    auto epicCvar = cvarManager->registerCvar("soundboard_epic_save_path", "epic_save.wav", "Path to epic save sound file (relative to sounds folder)", true, true, 0.0, true, 1.0);
+    soundEpicSavePath = std::make_shared<CVarWrapper>(epicCvar);
+    
+    auto crossbarCvar = cvarManager->registerCvar("soundboard_crossbar_path", "crossbar.wav", "Path to crossbar hit sound file (relative to sounds folder)", true, true, 0.0, true, 1.0);
+    soundCrossbarPath = std::make_shared<CVarWrapper>(crossbarCvar);
 
     // Register console commands for easier management
     cvarManager->registerNotifier("soundboard_reset_all_paths", [this](std::vector<std::string> args) {
@@ -54,26 +67,26 @@ void SoundBoardPlugin::RegisterCVars()
 // Get the configured sound path for a specific event type
 std::string SoundBoardPlugin::GetSoundPath(const std::string& eventType)
 {
-    if (eventType == "goal" && !soundGoalPath.IsNull()) {
-        return soundGoalPath.getStringValue();
+    if (eventType == "goal" && soundGoalPath && !soundGoalPath->IsNull()) {
+        return soundGoalPath->getStringValue();
     }
-    else if (eventType == "save" && !soundSavePath.IsNull()) {
-        return soundSavePath.getStringValue();
+    else if (eventType == "save" && soundSavePath && !soundSavePath->IsNull()) {
+        return soundSavePath->getStringValue();
     }
-    else if (eventType == "demolition" && !soundDemolitionPath.IsNull()) {
-        return soundDemolitionPath.getStringValue();
+    else if (eventType == "demolition" && soundDemolitionPath && !soundDemolitionPath->IsNull()) {
+        return soundDemolitionPath->getStringValue();
     }
-    else if (eventType == "mvp" && !soundMVPPath.IsNull()) {
-        return soundMVPPath.getStringValue();
+    else if (eventType == "mvp" && soundMVPPath && !soundMVPPath->IsNull()) {
+        return soundMVPPath->getStringValue();
     }
-    else if (eventType == "aerial_goal" && !soundAerialGoalPath.IsNull()) {
-        return soundAerialGoalPath.getStringValue();
+    else if (eventType == "aerial_goal" && soundAerialGoalPath && !soundAerialGoalPath->IsNull()) {
+        return soundAerialGoalPath->getStringValue();
     }
-    else if (eventType == "epic_save" && !soundEpicSavePath.IsNull()) {
-        return soundEpicSavePath.getStringValue();
+    else if (eventType == "epic_save" && soundEpicSavePath && !soundEpicSavePath->IsNull()) {
+        return soundEpicSavePath->getStringValue();
     }
-    else if (eventType == "crossbar" && !soundCrossbarPath.IsNull()) {
-        return soundCrossbarPath.getStringValue();
+    else if (eventType == "crossbar" && soundCrossbarPath && !soundCrossbarPath->IsNull()) {
+        return soundCrossbarPath->getStringValue();
     }
     
     // Fallback to default filename if CVar not found
@@ -83,26 +96,26 @@ std::string SoundBoardPlugin::GetSoundPath(const std::string& eventType)
 // Set a custom sound path for a specific event type
 void SoundBoardPlugin::SetSoundPath(const std::string& eventType, const std::string& path)
 {
-    if (eventType == "goal" && !soundGoalPath.IsNull()) {
-        soundGoalPath.setValue(path);
+    if (eventType == "goal" && soundGoalPath && !soundGoalPath->IsNull()) {
+        soundGoalPath->setValue(path);
     }
-    else if (eventType == "save" && !soundSavePath.IsNull()) {
-        soundSavePath.setValue(path);
+    else if (eventType == "save" && soundSavePath && !soundSavePath->IsNull()) {
+        soundSavePath->setValue(path);
     }
-    else if (eventType == "demolition" && !soundDemolitionPath.IsNull()) {
-        soundDemolitionPath.setValue(path);
+    else if (eventType == "demolition" && soundDemolitionPath && !soundDemolitionPath->IsNull()) {
+        soundDemolitionPath->setValue(path);
     }
-    else if (eventType == "mvp" && !soundMVPPath.IsNull()) {
-        soundMVPPath.setValue(path);
+    else if (eventType == "mvp" && soundMVPPath && !soundMVPPath->IsNull()) {
+        soundMVPPath->setValue(path);
     }
-    else if (eventType == "aerial_goal" && !soundAerialGoalPath.IsNull()) {
-        soundAerialGoalPath.setValue(path);
+    else if (eventType == "aerial_goal" && soundAerialGoalPath && !soundAerialGoalPath->IsNull()) {
+        soundAerialGoalPath->setValue(path);
     }
-    else if (eventType == "epic_save" && !soundEpicSavePath.IsNull()) {
-        soundEpicSavePath.setValue(path);
+    else if (eventType == "epic_save" && soundEpicSavePath && !soundEpicSavePath->IsNull()) {
+        soundEpicSavePath->setValue(path);
     }
-    else if (eventType == "crossbar" && !soundCrossbarPath.IsNull()) {
-        soundCrossbarPath.setValue(path);
+    else if (eventType == "crossbar" && soundCrossbarPath && !soundCrossbarPath->IsNull()) {
+        soundCrossbarPath->setValue(path);
     }
 }
 
@@ -116,13 +129,13 @@ void SoundBoardPlugin::ResetSoundPath(const std::string& eventType)
 // Reset all sound paths to defaults
 void SoundBoardPlugin::ResetAllSoundPaths()
 {
-    if (!soundGoalPath.IsNull()) soundGoalPath.setValue("goal.wav");
-    if (!soundSavePath.IsNull()) soundSavePath.setValue("save.wav");
-    if (!soundDemolitionPath.IsNull()) soundDemolitionPath.setValue("demolition.wav");
-    if (!soundMVPPath.IsNull()) soundMVPPath.setValue("mvp.wav");
-    if (!soundAerialGoalPath.IsNull()) soundAerialGoalPath.setValue("aerial_goal.wav");
-    if (!soundEpicSavePath.IsNull()) soundEpicSavePath.setValue("epic_save.wav");
-    if (!soundCrossbarPath.IsNull()) soundCrossbarPath.setValue("crossbar.wav");
+    if (soundGoalPath && !soundGoalPath->IsNull()) soundGoalPath->setValue("goal.wav");
+    if (soundSavePath && !soundSavePath->IsNull()) soundSavePath->setValue("save.wav");
+    if (soundDemolitionPath && !soundDemolitionPath->IsNull()) soundDemolitionPath->setValue("demolition.wav");
+    if (soundMVPPath && !soundMVPPath->IsNull()) soundMVPPath->setValue("mvp.wav");
+    if (soundAerialGoalPath && !soundAerialGoalPath->IsNull()) soundAerialGoalPath->setValue("aerial_goal.wav");
+    if (soundEpicSavePath && !soundEpicSavePath->IsNull()) soundEpicSavePath->setValue("epic_save.wav");
+    if (soundCrossbarPath && !soundCrossbarPath->IsNull()) soundCrossbarPath->setValue("crossbar.wav");
 }
 
 // Hooks listener

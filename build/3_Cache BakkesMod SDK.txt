@@ -1,16 +1,16 @@
-﻿2025-07-03T01:33:58.1280009Z ##[group]Run actions/cache@v4
-2025-07-03T01:33:58.1280362Z with:
-2025-07-03T01:33:58.1280536Z   path: BakkesModSDK-master
-2025-07-03T01:33:58.1280915Z   key: bakkesmod-sdk-f5e890e678d11f042c107585ef61e21c7816ddbc68babf3c940715359b0607c5
-2025-07-03T01:33:58.1281309Z   restore-keys: bakkesmod-sdk-
-2025-07-03T01:33:58.1282400Z   enableCrossOsArchive: false
-2025-07-03T01:33:58.1282615Z   fail-on-cache-miss: false
-2025-07-03T01:33:58.1282802Z   lookup-only: false
-2025-07-03T01:33:58.1282967Z   save-always: false
-2025-07-03T01:33:58.1283132Z ##[endgroup]
-2025-07-03T01:33:58.5864084Z Cache hit for: bakkesmod-sdk-f5e890e678d11f042c107585ef61e21c7816ddbc68babf3c940715359b0607c5
-2025-07-03T01:33:59.0248496Z Received 48133786 of 48133786 (100.0%), 116.2 MBs/sec
-2025-07-03T01:33:59.0251609Z Cache Size: ~46 MB (48133786 B)
-2025-07-03T01:33:59.0288898Z [command]"C:\Program Files\Git\usr\bin\tar.exe" -xf D:/a/_temp/37d9e870-3ee3-4e7a-9c33-37793c72cf06/cache.tzst -P -C D:/a/rl-soundboard/rl-soundboard --force-local --use-compress-program "zstd -d"
-2025-07-03T01:33:59.4918730Z Cache restored successfully
-2025-07-03T01:33:59.5070208Z Cache restored from key: bakkesmod-sdk-f5e890e678d11f042c107585ef61e21c7816ddbc68babf3c940715359b0607c5
+﻿2025-07-03T01:37:48.0826775Z ##[group]Run actions/cache@v4
+2025-07-03T01:37:48.0827129Z with:
+2025-07-03T01:37:48.0827327Z   path: BakkesModSDK-master
+2025-07-03T01:37:48.0827722Z   key: bakkesmod-sdk-f5e890e678d11f042c107585ef61e21c7816ddbc68babf3c940715359b0607c5
+2025-07-03T01:37:48.0828131Z   restore-keys: bakkesmod-sdk-
+2025-07-03T01:37:48.0829315Z   enableCrossOsArchive: false
+2025-07-03T01:37:48.0829535Z   fail-on-cache-miss: false
+2025-07-03T01:37:48.0829747Z   lookup-only: false
+2025-07-03T01:37:48.0829928Z   save-always: false
+2025-07-03T01:37:48.0830141Z ##[endgroup]
+2025-07-03T01:37:48.6002550Z Cache hit for: bakkesmod-sdk-f5e890e678d11f042c107585ef61e21c7816ddbc68babf3c940715359b0607c5
+2025-07-03T01:37:49.4264493Z Received 48133786 of 48133786 (100.0%), 68.0 MBs/sec
+2025-07-03T01:37:49.4268746Z Cache Size: ~46 MB (48133786 B)
+2025-07-03T01:37:49.4300533Z [command]"C:\Program Files\Git\usr\bin\tar.exe" -xf D:/a/_temp/20bc45bf-6ce8-4188-aee5-53f99791f21b/cache.tzst -P -C D:/a/rl-soundboard/rl-soundboard --force-local --use-compress-program "zstd -d"
+2025-07-03T01:37:49.8697449Z Cache restored successfully
+2025-07-03T01:37:49.8860669Z Cache restored from key: bakkesmod-sdk-f5e890e678d11f042c107585ef61e21c7816ddbc68babf3c940715359b0607c5

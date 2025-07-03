@@ -13,13 +13,13 @@ class SoundBoardPlugin : public BakkesMod::Plugin::BakkesModPlugin
 {
 private:
 	// CVars for configurable sound file paths
-	CVarWrapper soundGoalPath;
-	CVarWrapper soundSavePath;
-	CVarWrapper soundDemolitionPath;
-	CVarWrapper soundMVPPath;
-	CVarWrapper soundAerialGoalPath;
-	CVarWrapper soundEpicSavePath;
-	CVarWrapper soundCrossbarPath;
+	std::shared_ptr<CVarWrapper> soundGoalPath;
+	std::shared_ptr<CVarWrapper> soundSavePath;
+	std::shared_ptr<CVarWrapper> soundDemolitionPath;
+	std::shared_ptr<CVarWrapper> soundMVPPath;
+	std::shared_ptr<CVarWrapper> soundAerialGoalPath;
+	std::shared_ptr<CVarWrapper> soundEpicSavePath;
+	std::shared_ptr<CVarWrapper> soundCrossbarPath;
 
 public:
 	// Core plugin functionality
