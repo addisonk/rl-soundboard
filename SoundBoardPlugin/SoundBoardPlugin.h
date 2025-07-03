@@ -11,10 +11,28 @@ constexpr auto plugin_version = stringify(VERSION_MAJOR) "." stringify(VERSION_M
 
 class SoundBoardPlugin : public BakkesMod::Plugin::BakkesModPlugin
 {
+private:
+	// CVars for configurable sound file paths
+	std::shared_ptr<CVarWrapper> soundGoalPath;
+	std::shared_ptr<CVarWrapper> soundSavePath;
+	std::shared_ptr<CVarWrapper> soundDemolitionPath;
+	std::shared_ptr<CVarWrapper> soundMVPPath;
+	std::shared_ptr<CVarWrapper> soundAerialGoalPath;
+	std::shared_ptr<CVarWrapper> soundEpicSavePath;
+	std::shared_ptr<CVarWrapper> soundCrossbarPath;
+
+public:
 	// Core plugin functionality
 	void onLoad() override;
 	void LoadHooks();
 	void CrossBarHit(std::string name);
 	void PlayASound(std::string name);
 	void OnStatTickerMessage(void* params);
+	
+	// Configuration functionality
+	void RegisterCVars();
+	std::string GetSoundPath(const std::string& eventType);
+	void SetSoundPath(const std::string& eventType, const std::string& path);
+	void ResetSoundPath(const std::string& eventType);
+	void ResetAllSoundPaths();
 };
