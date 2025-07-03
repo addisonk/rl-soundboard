@@ -25,9 +25,19 @@ RocketLeague_SoundBoard_BakkesModPlugin is a soundboard plugin that plays custom
 
 ## 🎵 Configurable Sound Paths (NEW!)
 
-You can now customize which sound files play for each game event! The plugin defaults to the original sound files but allows you to specify custom paths.
+You can now customize which sound files play for each game event! The plugin provides both a **graphical settings interface** and **console commands** for configuration.
 
-### Console Commands
+### GUI Settings Window (Recommended)
+
+1. **Access Settings**: Go to `BakkesMod Settings` → `Plugins` → `SoundBoardPlugin`
+2. **Configure Sounds**: For each event type, you'll see:
+   - **Input field**: Shows current sound file path
+   - **Browse button**: Provides guidance on adding new sound files  
+   - **Reset button**: Restores default sound for that event
+3. **Apply Changes**: Type new path and press Enter, or use Reset button
+4. **Global Reset**: Use "Reset All Sounds" button to restore all defaults
+
+### Console Commands (Advanced)
 
 #### Setting Custom Sound Paths
 ```
@@ -50,29 +60,24 @@ soundboard_reset_all_paths     # Reset all paths to defaults
 
 **Using sounds from the main sounds folder:**
 ```
-soundboard_goal_path "goal.wav"              # Default
-soundboard_goal_path "fortnite_win.wav"      # Custom sound
+goal.wav                      # Default
+fortnite_win.wav             # Custom sound
 ```
 
 **Using sounds from subfolders:**
 ```
-soundboard_save_path "another_sounds/perfect_fart.wav"
-soundboard_mvp_path "another_sounds/final_fantasy_win.wav"
-soundboard_demolition_path "another_sounds/minecraft_anvil_loud.wav"
-```
-
-**Reset to defaults:**
-```
-soundboard_goal_path "goal.wav"
-# Or reset everything at once:
-soundboard_reset_all_paths
+another_sounds/perfect_fart.wav
+another_sounds/final_fantasy_win.wav
+another_sounds/minecraft_anvil_loud.wav
 ```
 
 ### How It Works
+- **GUI Interface**: Easy point-and-click configuration in BakkesMod settings
+- **Real-time Updates**: Changes apply immediately when you press Enter or click Reset
+- **Path Validation**: Only plays if the file exists in the sounds folder
 - All paths are relative to your BakkesMod `sounds` folder: `%APPDATA%/bakkesmod/bakkesmod/data/sounds/`
 - Settings persist between sessions (saved automatically)
 - Backward compatible - defaults to original filenames
-- File validation - only plays if the file exists
 
 ### Sound Event Types
 - **Goal** - When you score a goal

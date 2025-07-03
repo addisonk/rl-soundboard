@@ -234,3 +234,205 @@ void SoundBoardPlugin::PlayASound(std::string name)
         PlaySound(soundFilePath, NULL, SND_FILENAME | SND_ASYNC);
     }
 }
+
+// GUI functionality
+void SoundBoardPlugin::RenderSettings()
+{
+    ImGui::TextUnformatted("Sound File Configuration");
+    ImGui::Separator();
+    ImGui::Spacing();
+
+    // Update input buffers with current CVar values
+    UpdateInputBuffers();
+
+    float inputWidth = 400.0f;
+    float buttonWidth = 80.0f;
+    float spacing = 10.0f;
+
+    // Goal Sound
+    ImGui::Text("Goal Sound:");
+    ImGui::SetNextItemWidth(inputWidth);
+    if (ImGui::InputText("##goal_path", goalPathBuffer, sizeof(goalPathBuffer), ImGuiInputTextFlags_EnterReturnsTrue)) {
+        ApplyPathFromBuffer("goal", goalPathBuffer);
+    }
+    ImGui::SameLine(0, spacing);
+    if (ImGui::Button("Browse##goal", ImVec2(buttonWidth, 0))) {
+        BrowseForSound("goal");
+    }
+    ImGui::SameLine(0, spacing);
+    if (ImGui::Button("Reset##goal", ImVec2(buttonWidth, 0))) {
+        ResetSoundGUI("goal");
+    }
+    ImGui::Spacing();
+
+    // Save Sound
+    ImGui::Text("Save Sound:");
+    ImGui::SetNextItemWidth(inputWidth);
+    if (ImGui::InputText("##save_path", savePathBuffer, sizeof(savePathBuffer), ImGuiInputTextFlags_EnterReturnsTrue)) {
+        ApplyPathFromBuffer("save", savePathBuffer);
+    }
+    ImGui::SameLine(0, spacing);
+    if (ImGui::Button("Browse##save", ImVec2(buttonWidth, 0))) {
+        BrowseForSound("save");
+    }
+    ImGui::SameLine(0, spacing);
+    if (ImGui::Button("Reset##save", ImVec2(buttonWidth, 0))) {
+        ResetSoundGUI("save");
+    }
+    ImGui::Spacing();
+
+    // Demolition Sound
+    ImGui::Text("Demolition Sound:");
+    ImGui::SetNextItemWidth(inputWidth);
+    if (ImGui::InputText("##demolition_path", demolitionPathBuffer, sizeof(demolitionPathBuffer), ImGuiInputTextFlags_EnterReturnsTrue)) {
+        ApplyPathFromBuffer("demolition", demolitionPathBuffer);
+    }
+    ImGui::SameLine(0, spacing);
+    if (ImGui::Button("Browse##demolition", ImVec2(buttonWidth, 0))) {
+        BrowseForSound("demolition");
+    }
+    ImGui::SameLine(0, spacing);
+    if (ImGui::Button("Reset##demolition", ImVec2(buttonWidth, 0))) {
+        ResetSoundGUI("demolition");
+    }
+    ImGui::Spacing();
+
+    // MVP Sound
+    ImGui::Text("MVP Sound:");
+    ImGui::SetNextItemWidth(inputWidth);
+    if (ImGui::InputText("##mvp_path", mvpPathBuffer, sizeof(mvpPathBuffer), ImGuiInputTextFlags_EnterReturnsTrue)) {
+        ApplyPathFromBuffer("mvp", mvpPathBuffer);
+    }
+    ImGui::SameLine(0, spacing);
+    if (ImGui::Button("Browse##mvp", ImVec2(buttonWidth, 0))) {
+        BrowseForSound("mvp");
+    }
+    ImGui::SameLine(0, spacing);
+    if (ImGui::Button("Reset##mvp", ImVec2(buttonWidth, 0))) {
+        ResetSoundGUI("mvp");
+    }
+    ImGui::Spacing();
+
+    // Aerial Goal Sound
+    ImGui::Text("Aerial Goal Sound:");
+    ImGui::SetNextItemWidth(inputWidth);
+    if (ImGui::InputText("##aerial_goal_path", aerialGoalPathBuffer, sizeof(aerialGoalPathBuffer), ImGuiInputTextFlags_EnterReturnsTrue)) {
+        ApplyPathFromBuffer("aerial_goal", aerialGoalPathBuffer);
+    }
+    ImGui::SameLine(0, spacing);
+    if (ImGui::Button("Browse##aerial_goal", ImVec2(buttonWidth, 0))) {
+        BrowseForSound("aerial_goal");
+    }
+    ImGui::SameLine(0, spacing);
+    if (ImGui::Button("Reset##aerial_goal", ImVec2(buttonWidth, 0))) {
+        ResetSoundGUI("aerial_goal");
+    }
+    ImGui::Spacing();
+
+    // Epic Save Sound
+    ImGui::Text("Epic Save Sound:");
+    ImGui::SetNextItemWidth(inputWidth);
+    if (ImGui::InputText("##epic_save_path", epicSavePathBuffer, sizeof(epicSavePathBuffer), ImGuiInputTextFlags_EnterReturnsTrue)) {
+        ApplyPathFromBuffer("epic_save", epicSavePathBuffer);
+    }
+    ImGui::SameLine(0, spacing);
+    if (ImGui::Button("Browse##epic_save", ImVec2(buttonWidth, 0))) {
+        BrowseForSound("epic_save");
+    }
+    ImGui::SameLine(0, spacing);
+    if (ImGui::Button("Reset##epic_save", ImVec2(buttonWidth, 0))) {
+        ResetSoundGUI("epic_save");
+    }
+    ImGui::Spacing();
+
+    // Crossbar Sound
+    ImGui::Text("Crossbar Hit Sound:");
+    ImGui::SetNextItemWidth(inputWidth);
+    if (ImGui::InputText("##crossbar_path", crossbarPathBuffer, sizeof(crossbarPathBuffer), ImGuiInputTextFlags_EnterReturnsTrue)) {
+        ApplyPathFromBuffer("crossbar", crossbarPathBuffer);
+    }
+    ImGui::SameLine(0, spacing);
+    if (ImGui::Button("Browse##crossbar", ImVec2(buttonWidth, 0))) {
+        BrowseForSound("crossbar");
+    }
+    ImGui::SameLine(0, spacing);
+    if (ImGui::Button("Reset##crossbar", ImVec2(buttonWidth, 0))) {
+        ResetSoundGUI("crossbar");
+    }
+    ImGui::Spacing();
+    ImGui::Spacing();
+
+    // Global Reset Button
+    if (ImGui::Button("Reset All Sounds", ImVec2(200, 0))) {
+        ResetAllSoundPaths();
+        UpdateInputBuffers(); // Refresh GUI after reset
+    }
+
+    ImGui::Spacing();
+    ImGui::TextUnformatted("Note: All paths are relative to the BakkesMod sounds folder:");
+    ImGui::TextUnformatted("%APPDATA%/bakkesmod/bakkesmod/data/sounds/");
+    ImGui::TextUnformatted("Example: 'goal.wav' or 'another_sounds/custom_goal.wav'");
+}
+
+// Update GUI input buffers with current CVar values
+void SoundBoardPlugin::UpdateInputBuffers()
+{
+    std::string currentPath;
+    
+    currentPath = GetSoundPath("goal");
+    strncpy_s(goalPathBuffer, currentPath.c_str(), sizeof(goalPathBuffer) - 1);
+    
+    currentPath = GetSoundPath("save");
+    strncpy_s(savePathBuffer, currentPath.c_str(), sizeof(savePathBuffer) - 1);
+    
+    currentPath = GetSoundPath("demolition");
+    strncpy_s(demolitionPathBuffer, currentPath.c_str(), sizeof(demolitionPathBuffer) - 1);
+    
+    currentPath = GetSoundPath("mvp");
+    strncpy_s(mvpPathBuffer, currentPath.c_str(), sizeof(mvpPathBuffer) - 1);
+    
+    currentPath = GetSoundPath("aerial_goal");
+    strncpy_s(aerialGoalPathBuffer, currentPath.c_str(), sizeof(aerialGoalPathBuffer) - 1);
+    
+    currentPath = GetSoundPath("epic_save");
+    strncpy_s(epicSavePathBuffer, currentPath.c_str(), sizeof(epicSavePathBuffer) - 1);
+    
+    currentPath = GetSoundPath("crossbar");
+    strncpy_s(crossbarPathBuffer, currentPath.c_str(), sizeof(crossbarPathBuffer) - 1);
+}
+
+// Apply path from GUI input buffer to CVar
+void SoundBoardPlugin::ApplyPathFromBuffer(const std::string& eventType, const char* buffer)
+{
+    if (buffer && strlen(buffer) > 0) {
+        SetSoundPath(eventType, std::string(buffer));
+        cvarManager->log("Updated " + eventType + " sound path to: " + std::string(buffer));
+    }
+}
+
+// Browse for sound file (placeholder - opens file dialog simulation)
+void SoundBoardPlugin::BrowseForSound(const std::string& eventType)
+{
+    // For now, show a message about how to use the browse feature
+    // In a full implementation, this would open a file dialog
+    cvarManager->log("Browse for " + eventType + " sound file:");
+    cvarManager->log("1. Navigate to your BakkesMod sounds folder:");
+    cvarManager->log("   %APPDATA%/bakkesmod/bakkesmod/data/sounds/");
+    cvarManager->log("2. Copy your .wav file there");
+    cvarManager->log("3. Enter the filename (or subfolder/filename) in the input field");
+    cvarManager->log("4. Press Enter or click outside the field to apply");
+    
+    // Set focus back to the input field for this event type
+    // This helps user experience by highlighting the relevant field
+    if (eventType == "goal") {
+        ImGui::SetKeyboardFocusHere(-1); // Focus previous item (the input field)
+    }
+}
+
+// Reset specific sound path via GUI
+void SoundBoardPlugin::ResetSoundGUI(const std::string& eventType)
+{
+    ResetSoundPath(eventType);
+    UpdateInputBuffers(); // Refresh GUI to show the reset value
+    cvarManager->log("Reset " + eventType + " sound to default");
+}
