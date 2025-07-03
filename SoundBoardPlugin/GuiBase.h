@@ -7,14 +7,6 @@ class SettingsWindowBase : public BakkesMod::Plugin::PluginSettingsWindow
 public:
 	std::string GetPluginName() override;
 	void SetImGuiContext(uintptr_t ctx) override;
-	
-	// Pure virtual method for rendering settings content
-	virtual void RenderSettings() = 0;
-	
-	// Override the main render method to call our custom RenderSettings
-	void Render() override {
-		RenderSettings();
-	}
 };
 
 class PluginWindowBase : public BakkesMod::Plugin::PluginWindow
