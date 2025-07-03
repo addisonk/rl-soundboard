@@ -1,0 +1,10 @@
+﻿2025-07-02T04:43:04.8662248Z Post job cleanup.
+2025-07-02T04:43:05.1181001Z [command]"C:\Program Files\Git\bin\git.exe" version
+2025-07-02T04:43:05.1400749Z git version 2.50.0.windows.1
+2025-07-02T04:43:05.1465419Z Temporarily overriding HOME='D:\a\_temp\77f33208-03dd-44f4-b400-316dc31b8273' before making global git config changes
+2025-07-02T04:43:05.1466269Z Adding repository directory to the temporary git global config as a safe directory
+2025-07-02T04:43:05.1480821Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\CustomPlayerAnthems\CustomPlayerAnthems
+2025-07-02T04:43:05.1728994Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2025-07-02T04:43:05.1976863Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2025-07-02T04:43:05.6541978Z fatal: No url found for submodule path 'BakkesModPlugin-Template' in .gitmodules
+2025-07-02T04:43:05.6641142Z ##[warning]The process 'C:\Program Files\Git\bin\git.exe' failed with exit code 128

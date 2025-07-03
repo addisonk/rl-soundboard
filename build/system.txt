@@ -1,0 +1,5 @@
+2025-06-30T02:04:15.5576974Z Requested labels: windows-latest
+2025-06-30T02:04:15.5576974Z Job defined at: addisonk/CustomPlayerAnthems/.github/workflows/build.yml@refs/heads/main
+2025-06-30T02:04:15.5576974Z Waiting for a runner to pick up this job...
+2025-06-30T02:04:15.8494599Z Job is waiting for a hosted runner to come online.
+2025-06-30T02:04:15.8494671Z Job is about to start running on the hosted runner: GitHub Actions 1000000254

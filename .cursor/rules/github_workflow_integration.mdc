@@ -1,0 +1,388 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# 🔄 GitHub Workflow Integration Rule
+
+## **HYBRID GITHUB INTEGRATION APPROACH**
+
+When the user requests ANY task involving code changes, repository modifications, or development work, you MUST proceed immediately without asking for permission:
+
+### **1. HYBRID TOOLS STRATEGY** ⭐
+**TESTED & PROVEN APPROACH:**
+- **Primary Tools**: GitHub CLI (`gh`) + Direct API calls (100% reliable)
+- **Secondary Tools**: GitHub MCP where functional (basic operations only)
+- **Fallback Strategy**: Always have GitHub CLI commands ready when MCP fails
+
+**GitHub CLI + API (PRIMARY - ALWAYS WORKING):**
+- ✅ Repository operations, file management, commit verification
+- ✅ Build monitoring, workflow investigation, error log extraction
+- ✅ Branch management, push/pull operations
+- ✅ All critical development workflow operations
+
+**GitHub MCP (SECONDARY - LIMITED FUNCTIONALITY):**
+- ✅ User authentication verification (`mcp_github_get_me`)
+- ✅ Repository search (`mcp_github_search_repositories`)  
+- ✅ Basic issue/PR listing (`mcp_github_list_issues/pull_requests`)
+- ❌ **NOT RELIABLE** for: commits, branches, file operations, write operations
+
+### **2. COMPREHENSIVE REAL GITHUB API MONITORING** ⭐
+
+**PROVEN: Real GitHub API monitoring is MUCH more effective than simulation approach**
+
+### **MULTI-LEVEL MONITORING SYSTEM:**
+
+#### **Level 1: Basic Status Check**
+```bash
+git push && sleep 120 && gh api '/repos/owner/repo/actions/runs?per_page=1' | jq '.workflow_runs[0] | {status: .status, conclusion: .conclusion, message: .head_commit.message}'
+```
+
+#### **Level 2: Detailed Job Analysis**
+```bash
+# Get job details and failed steps
+gh api '/repos/owner/repo/actions/runs?per_page=1' | jq '.workflow_runs[0].id' | xargs -I {} gh api '/repos/owner/repo/actions/runs/{}/jobs' | jq '.jobs[0] | {name: .name, conclusion: .conclusion, html_url: .html_url, steps: [.steps[] | select(.conclusion != "success") | {name: .name, conclusion: .conclusion}]}'
+```
+
+#### **Level 3: Artifact and Error Investigation**
+```bash
+# Get build artifacts (if any)
+gh api '/repos/owner/repo/actions/runs?per_page=1' | jq '.workflow_runs[0].id' | xargs -I {} gh api '/repos/owner/repo/actions/runs/{}/artifacts' | jq '.artifacts[] | {name: .name, download_url: .archive_download_url, size_in_bytes: .size_in_bytes}'
+```
+
+### **3. BUILD FAILURE INVESTIGATION PROTOCOL** 🚨
+
+**When build status shows "failure", IMMEDIATELY follow these steps:**
+
+#### **Step 1: Get Build Run Details**
+```bash
+# Get the latest failed run ID and URL
+gh api '/repos/owner/repo/actions/runs?per_page=1' | jq '.workflow_runs[0] | {id: .id, html_url: .html_url, conclusion: .conclusion}'
+```
+
+#### **Step 2: Analyze Failed Jobs**  
+```bash
+# Get detailed job failure information
+RUN_ID=$(gh api '/repos/owner/repo/actions/runs?per_page=1' | jq -r '.workflow_runs[0].id')
+gh api "/repos/owner/repo/actions/runs/$RUN_ID/jobs" | jq '.jobs[] | select(.conclusion == "failure") | {name: .name, html_url: .html_url, steps: [.steps[] | select(.conclusion != "success") | {name: .name, conclusion: .conclusion}]}'
+```
+
+#### **Step 3: GET ACTUAL BUILD ERROR LOGS** ⭐ **BREAKTHROUGH METHOD**
+
+**PROVEN: This method successfully extracts readable error messages from compressed GitHub Actions logs:**
+
+```bash
+# Download and extract the actual build logs
+RUN_ID=$(gh api '/repos/owner/repo/actions/runs?per_page=1' | jq -r '.workflow_runs[0].id')
+echo "Downloading logs for run $RUN_ID..."
+gh api "/repos/owner/repo/actions/runs/$RUN_ID/logs" > build_logs.zip
+
+# Extract the compressed logs  
+echo "Downloaded. Extracting..."
+# CRITICAL: Use -o flag to overwrite without prompting - prevents getting stuck!
+unzip -o -q build_logs.zip
+
+# List extracted log files
+ls -la *.txt
+
+# Search for actual compilation errors
+echo "=== SEARCHING FOR BUILD ERRORS ==="
+grep -A 5 -B 5 -i "error" 0_build.txt | head -30
+```
+
+**This method successfully reveals:**
+- **Exact compilation errors** (e.g., "error C2440: 'initializing': cannot convert from 'Vector2' to 'Vector2F'")
+- **Line numbers** where errors occur
+- **Specific file paths** causing issues
+- **Complete error context** with surrounding lines
+
+#### **🚨 CRITICAL: HANDLING TERMINAL INTERRUPTIONS** 
+
+**COMMON ISSUE: Terminal commands get interrupted during log extraction, causing the AI to get stuck.**
+
+**SYMPTOMS of interruption:**
+- Terminal shows "Command cancelled" or "Command was interrupted"
+- Unzip prompts appear: "replace file? [y]es, [n]o, [A]ll, [N]one, [r]ename:"
+- Terminal command hangs waiting for user input
+- User says "You're stuck. Please continue"
+
+**IMMEDIATE RECOVERY ACTIONS:**
+
+**1. Force Non-Interactive Extraction:**
+```bash
+# Use -o flag to force overwrite without prompts
+echo "A" | unzip -o build_logs.zip
+# OR completely non-interactive approach
+unzip -o -q build_logs.zip 2>/dev/null || unzip -o build_logs.zip
+```
+
+**2. Alternative Extraction Methods:**
+```bash
+# If unzip fails, try different approach
+rm -f *.txt 2>/dev/null  # Clean up any partial files
+unzip -j build_logs.zip "*.txt" 2>/dev/null || echo "Extraction with different method"
+```
+
+**3. Direct Error Search Without Full Extraction:**
+```bash
+# Search directly in zip file if extraction fails
+unzip -p build_logs.zip "0_build.txt" | grep -A 5 -B 5 -i "error" | head -30
+```
+
+**4. Recovery Protocol When User Says "You're Stuck":**
+```bash
+# Clean slate approach - remove all extracted files and start fresh
+rm -f *.txt build_logs.zip 2>/dev/null
+RUN_ID=$(gh api '/repos/owner/repo/actions/runs?per_page=1' | jq -r '.workflow_runs[0].id')
+gh api "/repos/owner/repo/actions/runs/$RUN_ID/logs" > build_logs.zip
+unzip -o -q build_logs.zip
+ls -la *.txt
+grep -A 5 -B 5 -i "error" 0_build.txt | head -30
+```
+
+**PREVENTION STRATEGIES:**
+- Always use `-o` flag with unzip to prevent overwrite prompts
+- Add `2>/dev/null` to suppress error messages that might cause hangs
+- Use `echo "A"` pipe to automatically answer "All" to prompts
+- Have fallback methods ready if primary extraction fails
+
+**CRITICAL RULE: If you get ANY interruption during log extraction, immediately use the non-interactive recovery methods above. Never wait for user input during automated processes.**
+
+#### **Step 4: Alternative Log Investigation Methods**
+
+**A. Try GitHub CLI annotations (if available):**
+```bash
+gh run view $RUN_ID --log-failed 2>/dev/null || echo "Annotations not accessible"
+```
+
+**B. Use GitHub Web Interface URLs:**
+- Navigate to: `https://github.com/owner/repo/actions`
+- Click the first (latest) failed run
+- Click the failed job name  
+- Scroll to the failed step to see error details
+
+**C. Use GitHub CLI for commit and file analysis:**
+```bash
+# Get commit details to understand what changed
+gh api '/repos/owner/repo/commits/commit_sha'
+```
+
+#### **Step 5: Common Build Error Patterns**
+
+**For C++/BakkesMod Projects:**
+- **Compilation Errors**: Look for "error C" or "undefined reference" in job output
+- **Type Conversion Issues**: "cannot convert from 'Type1' to 'Type2'"
+- **Missing Dependencies**: Check for "not found" or "cannot open include file"  
+- **CMake Issues**: Look for "CMake Error" or configuration failures
+- **Linking Problems**: Search for "LNK" errors or unresolved symbols
+
+**Visual Studio Build Errors:**
+- **MSBuild failures**: Look for "MSBuild" error codes
+- **Include path issues**: Check for header file not found errors
+- **SDK version mismatches**: Look for Windows SDK or VC++ version errors
+
+#### **Step 6: MANDATORY LOG EXTRACTION RULE**
+
+**🚨 CRITICAL RULE: If you cannot extract readable error logs using the method above, STOP attempting fixes and request manual intervention.**
+
+**Before making ANY code fixes:**
+1. **MUST** successfully download and extract build logs using the proven method
+2. **MUST** identify specific error message with line numbers
+3. **MUST** understand the exact compilation issue before proceeding
+4. **NEVER** make blind fixes without seeing actual error messages
+
+### **4. ERROR RESOLUTION WORKFLOW**
+
+**Once error is identified:**
+
+1. **Fix the source code issue** immediately
+2. **Test fix locally** if possible  
+3. **Commit and push fix** using GitHub CLI + git commands
+4. **Monitor new build** using the same investigation protocol
+5. **Repeat until build succeeds**
+
+### **5. HYBRID TOOLS USAGE WITH FALLBACKS**
+
+**Primary Operations (GitHub CLI + API - 100% RELIABLE):**
+
+```bash
+# Commit verification and listing
+gh api '/repos/owner/repo/commits?per_page=5' | jq '.[] | {sha: .sha, message: .commit.message, author: .commit.author.name}'
+
+# Get specific commit details
+gh api '/repos/owner/repo/commits/commit_sha' | jq '{sha: .sha, message: .commit.message, files: [.files[] | {filename: .filename, status: .status}]}'
+
+# File operations and repository content
+gh api '/repos/owner/repo/contents/path/to/file' | jq '{name: .name, path: .path, sha: .sha, size: .size}'
+
+# Push operations (standard git + verification)
+git add . && git commit -m "commit message" && git push origin main
+# Then verify with: gh api '/repos/owner/repo/commits?per_page=1'
+
+# Branch operations
+gh api '/repos/owner/repo/branches' | jq '.[] | {name: .name, protected: .protected}'
+```
+
+**MCP Tools (SECONDARY - Use with caution):**
+
+```bash
+# ✅ WORKING MCP Operations:
+mcp_github_get_me                    # User authentication verification
+mcp_github_search_repositories       # Repository search  
+mcp_github_list_issues               # Basic issue listing
+mcp_github_list_pull_requests        # Basic PR listing
+
+# ❌ FAILING MCP Operations (Use GitHub CLI instead):
+# mcp_github_list_commits            # → Use: gh api '/repos/owner/repo/commits'
+# mcp_github_get_commit              # → Use: gh api '/repos/owner/repo/commits/sha'
+# mcp_github_list_branches           # → Use: gh api '/repos/owner/repo/branches'
+# mcp_github_get_file_contents       # → Use: gh api '/repos/owner/repo/contents/path'
+# mcp_github_create_or_update_file   # → Use: git add/commit/push
+# mcp_github_push_files              # → Use: git add/commit/push
+```
+
+**CRITICAL: Repository-specific operations use GitHub CLI parameters:**
+```bash
+# ✅ CORRECT format for this repository:
+gh api '/repos/addisonk/BakkesModPlugin-Template/commits?per_page=1'
+
+# ✅ CORRECT for any repository:
+gh api "/repos/$OWNER/$REPO/commits?per_page=1"
+```
+
+### **6. CROSS-PLATFORM DEVELOPMENT INTEGRATION**
+
+**Remember the project workflow:**
+```
+Mac (development) → GitHub Actions (Windows build) → Download .dll → PC (BakkesMod install)
+```
+
+### **7. STANDARD COMMUNICATION PATTERN**
+
+**For Successful Builds:**
+- "✅ Pushing changes via git + GitHub CLI..."
+- "✅ Verifying commit with GitHub API..."
+- "✅ I can see our latest commit '[description]' (SHA: [real_sha]) is in the system"
+- "🔄 Build should be starting, let me check the status..."
+- "🎉 Build completed successfully!"
+
+**For Failed Builds:**  
+- "✅ I can see our latest commit '[description]' (SHA: [real_sha]) is in the system"
+- "❌ Build failed. Let me investigate the error..."
+- "🔍 Analyzing failed job: [job_url]"
+- "📋 Error identified: [specific_error_description]"
+- "🔧 Fixing: [brief_fix_description]"
+- "✅ Pushing fix..."
+
+### **8. PROJECT-SPECIFIC REQUIREMENTS**
+
+**For MyBakkesModPlugin:**
+- Ensure `MyBakkesModPlugin/` directory changes trigger builds correctly
+- Verify CMake configuration updates work with GitHub Actions
+- Confirm BakkesMod SDK integration in CI/CD
+- Provide confident assessment of Windows x64 .dll compilation
+- Validate plugin configuration files
+
+### **9. MANDATORY ERROR INVESTIGATION CHECKLIST**
+
+**Before declaring ANY build failure unfixable:**
+
+```bash
+# MANDATORY investigation steps (using RELIABLE tools):
+1. Get real commit SHA via GitHub CLI: gh api '/repos/addisonk/BakkesModPlugin-Template/commits?per_page=1'
+2. Get detailed commit changes via GitHub CLI: gh api '/repos/addisonk/BakkesModPlugin-Template/commits/SHA'
+3. Get failed run ID and job details via GitHub API
+4. Extract specific error messages from failed steps using log extraction method
+5. Identify root cause (compilation, linking, dependencies, etc.)
+6. Apply targeted fix to source code using standard git commands
+7. Re-push and monitor new build using GitHub API monitoring
+```
+
+## **CRITICAL RULES:**
+
+### **RULE 1: HYBRID APPROACH FOR REPOSITORY STATE**
+- **PRIMARY**: Use GitHub CLI + API for all critical repository operations
+- **SECONDARY**: Use GitHub MCP only for operations that work reliably
+- **ALWAYS**: Verify repository state using GitHub CLI after any changes
+- **ALWAYS**: Include ALL required parameters for API calls
+
+### **RULE 2: COMPREHENSIVE ERROR INVESTIGATION**
+- When builds fail, IMMEDIATELY investigate using the protocol above
+- Get specific error messages, not just "build failed"
+- Use multiple approaches: GitHub CLI, web interface, log extraction
+- Fix errors immediately and re-push
+
+### **RULE 3: BUILD SUCCESS CRITERIA**
+- GitHub CLI verification of push success
+- Comprehensive error investigation on failures
+- Targeted fixes based on specific error messages  
+- Never leave build failures unresolved
+
+### **RULE 4: UNZIP COMMANDS MUST NEVER PROMPT**
+- ALWAYS use `unzip -o -q` (overwrite + quiet) when extracting build logs
+- NEVER use `unzip -q` alone - it will prompt for file replacement confirmation
+- The `-o` flag prevents getting stuck waiting for user input during automated investigation
+- If extraction fails, use `rm -f *.txt && unzip -o -q build_logs.zip` as alternative
+
+**This hybrid approach provides:**
+- **100% reliable GitHub integration** using CLI + API
+- **Comprehensive error investigation** with actual log extraction
+- **Immediate issue resolution** based on specific errors
+- **Complete transparency** about build status and fixes
+- **Fallback strategies** when any tool fails
+
+### **10. AUTOMATIC VERSION INCREMENTING** 🔢
+
+**RULE: Every successful build MUST increment the build version number automatically.**
+
+#### **Version Increment Process:**
+1. **After successful build confirmation** - only increment version when build actually succeeds
+2. **Increment VERSION_BUILD only** - keeps VERSION_MAJOR.MINOR.PATCH stable for releases
+3. **Commit version update** - ensures version tracking in git history
+
+#### **Implementation Commands:**
+```bash
+# After confirming successful build, increment version
+VERSION_FILE="MyBakkesModPlugin/version.h"
+CURRENT_BUILD=$(grep "VERSION_BUILD" $VERSION_FILE | grep -o '[0-9]*')
+NEW_BUILD=$((CURRENT_BUILD + 1))
+
+# Update version.h file
+sed -i.bak "s/#define VERSION_BUILD [0-9]*/#define VERSION_BUILD $NEW_BUILD/" $VERSION_FILE
+rm "${VERSION_FILE}.bak" 2>/dev/null || true
+
+# Commit version update using reliable git commands
+git add $VERSION_FILE
+git commit -m "Auto-increment version to 0.0.0.$NEW_BUILD
+
+- Successful build verified
+- Auto-incremented VERSION_BUILD from $CURRENT_BUILD to $NEW_BUILD
+- Ready for next development iteration"
+
+git push origin main
+
+# Verify commit with GitHub API
+gh api '/repos/addisonk/BakkesModPlugin-Template/commits?per_page=1' | jq '.[0] | {sha: .sha, message: .commit.message}'
+```
+
+#### **Version Increment Workflow:**
+1. **Code changes made** - development work completed
+2. **Push changes** - trigger GitHub Actions build
+3. **Monitor build** - verify successful completion using investigation protocol
+4. **✅ Build success confirmed** - proceed to version increment
+5. **Increment version** - update VERSION_BUILD automatically
+6. **Commit & push version** - create version tracking commit with GitHub CLI verification
+
+#### **When NOT to Increment:**
+- **Build failures** - never increment on failed builds
+- **Documentation-only changes** - version bump not needed for docs
+- **Workflow file changes** - unless they affect actual plugin functionality
+- **Test commits** - use judgment for experimental changes
+
+#### **Version Strategy:**
+- **VERSION_BUILD**: Auto-incremented for each successful plugin build (testing versions)
+- **VERSION_PATCH**: Manual increment for bugfixes requiring new plugin release
+- **VERSION_MINOR**: Manual increment for new features requiring new plugin release  
+- **VERSION_MAJOR**: Manual increment for breaking changes requiring new plugin release
+
+**This ensures every working plugin build gets a unique version number for testing and deployment tracking.**

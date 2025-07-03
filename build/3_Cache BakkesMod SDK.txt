@@ -1,0 +1,17 @@
+﻿2025-07-02T04:42:34.8104028Z ##[group]Run actions/cache@v4
+2025-07-02T04:42:34.8104385Z with:
+2025-07-02T04:42:34.8104587Z   path: BakkesModSDK-master
+2025-07-02T04:42:34.8166571Z   key: bakkesmod-sdk-5b1068397c88da47389f8813f277ec4c1a900c28a5f2879af206d5cf4af44dcc
+2025-07-02T04:42:34.8167040Z   restore-keys: bakkesmod-sdk-
+2025-07-02T04:42:34.8167282Z   enableCrossOsArchive: false
+2025-07-02T04:42:34.8167500Z   fail-on-cache-miss: false
+2025-07-02T04:42:34.8168635Z   lookup-only: false
+2025-07-02T04:42:34.8168819Z   save-always: false
+2025-07-02T04:42:34.8169015Z ##[endgroup]
+2025-07-02T04:42:35.5969608Z Cache hit for: bakkesmod-sdk-5b1068397c88da47389f8813f277ec4c1a900c28a5f2879af206d5cf4af44dcc
+2025-07-02T04:42:36.8729483Z Received 16777216 of 130815186 (12.8%), 16.0 MBs/sec
+2025-07-02T04:42:37.8613649Z Received 130815186 of 130815186 (100.0%), 62.8 MBs/sec
+2025-07-02T04:42:37.8619079Z Cache Size: ~125 MB (130815186 B)
+2025-07-02T04:42:37.8700340Z [command]"C:\Program Files\Git\usr\bin\tar.exe" -xf D:/a/_temp/d301fae9-e811-4cf5-9d69-d31f2edf217a/cache.tzst -P -C D:/a/CustomPlayerAnthems/CustomPlayerAnthems --force-local --use-compress-program "zstd -d"
+2025-07-02T04:42:38.9749260Z Cache restored successfully
+2025-07-02T04:42:39.2110424Z Cache restored from key: bakkesmod-sdk-5b1068397c88da47389f8813f277ec4c1a900c28a5f2879af206d5cf4af44dcc
