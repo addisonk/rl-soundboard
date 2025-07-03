@@ -207,8 +207,9 @@ void SoundBoardPlugin::RenderSettings()
         }
         
         if (ImGui::Button("📁 Open Plugins Folder", ImVec2(150, 0))) {
-            std::string pluginsPath = gameWrapper->GetDataFolder() + "/../bakkesmod/plugins";
-            ShellExecuteA(NULL, "explore", pluginsPath.c_str(), NULL, NULL, SW_SHOWDEFAULT);
+            std::filesystem::path dataPath = gameWrapper->GetDataFolder();
+            std::filesystem::path pluginsPath = dataPath.parent_path() / "bakkesmod" / "plugins";
+            ShellExecuteA(NULL, "explore", pluginsPath.string().c_str(), NULL, NULL, SW_SHOWDEFAULT);
         }
     }
 }
