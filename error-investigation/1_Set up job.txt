@@ -1,24 +1,27 @@
-﻿2025-07-02T04:43:13.1924644Z Current runner version: '2.325.0'
-2025-07-02T04:43:13.1949528Z ##[group]Operating System
-2025-07-02T04:43:13.1950307Z Ubuntu
-2025-07-02T04:43:13.1950780Z 24.04.2
-2025-07-02T04:43:13.1951312Z LTS
-2025-07-02T04:43:13.1951787Z ##[endgroup]
-2025-07-02T04:43:13.1952641Z ##[group]Runner Image
-2025-07-02T04:43:13.1953362Z Image: ubuntu-24.04
-2025-07-02T04:43:13.1953847Z Version: 20250622.1.0
-2025-07-02T04:43:13.1954856Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20250622.1/images/ubuntu/Ubuntu2404-Readme.md
-2025-07-02T04:43:13.1956249Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20250622.1
-2025-07-02T04:43:13.1957100Z ##[endgroup]
-2025-07-02T04:43:13.1957623Z ##[group]Runner Image Provisioner
-2025-07-02T04:43:13.1958233Z 2.0.449.1
-2025-07-02T04:43:13.1958706Z ##[endgroup]
-2025-07-02T04:43:13.1959707Z ##[group]GITHUB_TOKEN Permissions
-2025-07-02T04:43:13.1961522Z Actions: read
-2025-07-02T04:43:13.1962466Z Contents: write
-2025-07-02T04:43:13.1963012Z Metadata: read
-2025-07-02T04:43:13.1963817Z ##[endgroup]
-2025-07-02T04:43:13.1965758Z Secret source: Actions
-2025-07-02T04:43:13.1966569Z Prepare workflow directory
-2025-07-02T04:43:13.2299771Z Prepare all required actions
-2025-07-02T04:43:13.2404273Z Complete job name: error-investigation
+﻿2025-07-03T01:34:33.2900578Z Current runner version: '2.325.0'
+2025-07-03T01:34:33.2935386Z ##[group]Runner Image Provisioner
+2025-07-03T01:34:33.2936699Z Hosted Compute Agent
+2025-07-03T01:34:33.2937507Z Version: 20250701.355
+2025-07-03T01:34:33.2938528Z Commit: 27f92e4f1798a901b7712d341e6f04a2ff90d227
+2025-07-03T01:34:33.2939607Z Build Date: 2025-07-01T18:23:27Z
+2025-07-03T01:34:33.2940537Z ##[endgroup]
+2025-07-03T01:34:33.2941348Z ##[group]Operating System
+2025-07-03T01:34:33.2942640Z Ubuntu
+2025-07-03T01:34:33.2943465Z 24.04.2
+2025-07-03T01:34:33.2944127Z LTS
+2025-07-03T01:34:33.2944978Z ##[endgroup]
+2025-07-03T01:34:33.2945756Z ##[group]Runner Image
+2025-07-03T01:34:33.2946671Z Image: ubuntu-24.04
+2025-07-03T01:34:33.2947610Z Version: 20250622.1.0
+2025-07-03T01:34:33.2949428Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20250622.1/images/ubuntu/Ubuntu2404-Readme.md
+2025-07-03T01:34:33.2952232Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20250622.1
+2025-07-03T01:34:33.2954252Z ##[endgroup]
+2025-07-03T01:34:33.2956174Z ##[group]GITHUB_TOKEN Permissions
+2025-07-03T01:34:33.2958806Z Actions: read
+2025-07-03T01:34:33.2959742Z Contents: write
+2025-07-03T01:34:33.2960830Z Metadata: read
+2025-07-03T01:34:33.2961746Z ##[endgroup]
+2025-07-03T01:34:33.2964933Z Secret source: Actions
+2025-07-03T01:34:33.2966089Z Prepare workflow directory
+2025-07-03T01:34:33.3354557Z Prepare all required actions
+2025-07-03T01:34:33.3447257Z Complete job name: error-investigation

@@ -1,94 +1,327 @@
-﻿2025-07-02T04:42:46.0677295Z ##[group]Run Write-Host "🔨 Building Custom Player Anthems BakkesMod Plugin..."
-2025-07-02T04:42:46.0677970Z [36;1mWrite-Host "🔨 Building Custom Player Anthems BakkesMod Plugin..."[0m
-2025-07-02T04:42:46.0678439Z [36;1mcd BakkesModSDK-master/PluginFiles/CustomPlayerAnthems[0m
-2025-07-02T04:42:46.0678734Z [36;1m[0m
-2025-07-02T04:42:46.0678919Z [36;1m# Build with comprehensive error handling[0m
-2025-07-02T04:42:46.0679160Z [36;1mtry {[0m
-2025-07-02T04:42:46.0679637Z [36;1m  msbuild CustomPlayerAnthems.vcxproj /p:Configuration=Release /p:Platform=x64 /p:PreferredToolArchitecture=x64 /m /v:minimal[0m
-2025-07-02T04:42:46.0680146Z [36;1m  [0m
-2025-07-02T04:42:46.0680308Z [36;1m  if ($LASTEXITCODE -eq 0) {[0m
-2025-07-02T04:42:46.0680596Z [36;1m    Write-Host "✅ Build completed successfully!"[0m
-2025-07-02T04:42:46.0680927Z [36;1m    echo "BUILD_SUCCESS=true" >> $env:GITHUB_OUTPUT[0m
-2025-07-02T04:42:46.0681184Z [36;1m    [0m
-2025-07-02T04:42:46.0681354Z [36;1m    # Verify output files[0m
-2025-07-02T04:42:46.0681678Z [36;1m    if (Test-Path "Release/CustomPlayerAnthems.dll") {[0m
-2025-07-02T04:42:46.0682065Z [36;1m      Write-Host "✅ CustomPlayerAnthems.dll generated successfully"[0m
-2025-07-02T04:42:46.0682664Z [36;1m      $dllSize = (Get-Item "Release/CustomPlayerAnthems.dll").Length[0m
-2025-07-02T04:42:46.0683009Z [36;1m      Write-Host "📦 DLL Size: $dllSize bytes"[0m
-2025-07-02T04:42:46.0683249Z [36;1m    } else {[0m
-2025-07-02T04:42:46.0683535Z [36;1m      Write-Host "❌ ERROR: CustomPlayerAnthems.dll not found after build!"[0m
-2025-07-02T04:42:46.0683920Z [36;1m      echo "BUILD_SUCCESS=false" >> $env:GITHUB_OUTPUT[0m
-2025-07-02T04:42:46.0684190Z [36;1m      exit 1[0m
-2025-07-02T04:42:46.0684342Z [36;1m    }[0m
-2025-07-02T04:42:46.0684499Z [36;1m  } else {[0m
-2025-07-02T04:42:46.0684746Z [36;1m    Write-Host "❌ Build failed with exit code: $LASTEXITCODE"[0m
-2025-07-02T04:42:46.0685087Z [36;1m    echo "BUILD_SUCCESS=false" >> $env:GITHUB_OUTPUT[0m
-2025-07-02T04:42:46.0685352Z [36;1m    exit 1[0m
-2025-07-02T04:42:46.0685511Z [36;1m  }[0m
-2025-07-02T04:42:46.0685655Z [36;1m} catch {[0m
-2025-07-02T04:42:46.0685871Z [36;1m  Write-Host "❌ Build failed with exception: $_"[0m
-2025-07-02T04:42:46.0686195Z [36;1m  echo "BUILD_SUCCESS=false" >> $env:GITHUB_OUTPUT[0m
-2025-07-02T04:42:46.0686446Z [36;1m  exit 1[0m
-2025-07-02T04:42:46.0686589Z [36;1m}[0m
-2025-07-02T04:42:46.0718447Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
-2025-07-02T04:42:46.0718769Z env:
-2025-07-02T04:42:46.0718942Z   CommandPromptType: Native
-2025-07-02T04:42:46.0719287Z   DevEnvDir: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\
-2025-07-02T04:42:46.0719798Z   ExtensionSdkDir: C:\Program Files (x86)\Microsoft SDKs\Windows Kits\10\ExtensionSDKs
-2025-07-02T04:42:46.0721869Z   EXTERNAL_INCLUDE: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\ATLMFC\include;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\VS\include;C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um
-2025-07-02T04:42:46.0723834Z   Framework40Version: v4.0
-2025-07-02T04:42:46.0724083Z   FrameworkDir: C:\Windows\Microsoft.NET\Framework64\
-2025-07-02T04:42:46.0724407Z   FrameworkDir64: C:\Windows\Microsoft.NET\Framework64\
-2025-07-02T04:42:46.0724676Z   FrameworkVersion: v4.0.30319
-2025-07-02T04:42:46.0724897Z   FrameworkVersion64: v4.0.30319
-2025-07-02T04:42:46.0725386Z   FSHARPINSTALLDIR: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\FSharp\Tools
-2025-07-02T04:42:46.0727789Z   HTMLHelpDir: C:\Program Files (x86)\HTML Help Workshop
-2025-07-02T04:42:46.0728246Z   IFCPATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\ifc\x64
-2025-07-02T04:42:46.0730340Z   INCLUDE: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\ATLMFC\include;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\VS\include;C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um
-2025-07-02T04:42:46.0732236Z   is_x64_arch: true
-2025-07-02T04:42:46.0733304Z   LIB: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\ATLMFC\lib\x64;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\lib\x64;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\lib\um\x64;C:\Program Files (x86)\Windows Kits\10\lib\10.0.26100.0\ucrt\x64;C:\Program Files (x86)\Windows Kits\10\\lib\10.0.26100.0\\um\x64
-2025-07-02T04:42:46.0735740Z   LIBPATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\ATLMFC\lib\x64;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\lib\x64;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\lib\x86\store\references;C:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.26100.0;C:\Program Files (x86)\Windows Kits\10\References\10.0.26100.0;C:\Windows\Microsoft.NET\Framework64\v4.0.30319
-2025-07-02T04:42:46.0737236Z   NETFXSDKDir: C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\
-2025-07-02T04:42:46.0750363Z   Path: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\VC\VCPackages;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\bin\Roslyn;C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\x64\;C:\Program Files (x86)\HTML Help Workshop;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\FSharp\Tools;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Team Tools\DiagnosticsHub\Collector;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\Llvm\x64\bin;C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\\x64;C:\Program Files (x86)\Windows Kits\10\bin\\x64;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\\MSBuild\Current\Bin\amd64;C:\Windows\Microsoft.NET\Framework64\v4.0.30319;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin;C:\Program Files\MongoDB\Server\5.0\bin;C:\aliyun-cli;C:\vcpkg;C:\Program Files (x86)\NSIS\;C:\tools\zstd;C:\Program Files\Mercurial\;C:\hostedtoolcache\windows\stack\3.5.1\x64;C:\cabal\bin;C:\\ghcup\bin;C:\mingw64\bin;C:\Program Files\dotnet;C:\Program Files\MySQL\MySQL Server 8.0\bin;C:\Program Files\R\R-4.4.2\bin\x64;C:\SeleniumWebDrivers\GeckoDriver;C:\SeleniumWebDrivers\EdgeDriver\;C:\SeleniumWebDrivers\ChromeDriver;C:\Program Files (x86)\sbt\bin;C:\Program Files (x86)\GitHub CLI;C:\Program Files\Git\bin;C:\Program Files (x86)\pipx_bin;C:\npm\prefix;C:\hostedtoolcache\windows\go\1.24.4\x64\bin;C:\hostedtoolcache\windows\Python\3.9.13\x64\Scripts;C:\hostedtoolcache\windows\Python\3.9.13\x64;C:\hostedtoolcache\windows\Ruby\3.3.8\x64\bin;C:\Program Files\OpenSSL\bin;C:\tools\kotlinc\bin;C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\8.0.452-9\x64\bin;C:\Program Files\ImageMagick-7.1.1-Q16-HDRI;C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin;C:\ProgramData\kind;C:\ProgramData\Chocolatey\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\PowerShell\7\;C:\Program Files\Microsoft\Web Platform Installer\;C:\Program Files\TortoiseSVN\bin;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\WiX Toolset v3.14\bin;C:\Program Files\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files\Microsoft SQL Server\140\DTS\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;C:\Strawberry\c\bin;C:\Strawberry\perl\site\bin;C:\Strawberry\perl\bin;C:\ProgramData\chocolatey\lib\pulumi\tools\Pulumi\bin;C:\Program Files\CMake\bin;C:\ProgramData\chocolatey\lib\maven\apache-maven-3.9.10\bin;C:\Program Files\Microsoft Service Fabric\bin\Fabric\Fabric.Code;C:\Program Files\Microsoft SDKs\Service Fabric\Tools\ServiceFabricLocalClusterManager;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Program Files\GitHub CLI\;c:\tools\php;C:\Program Files\Amazon\AWSCLIV2\;C:\Program Files\Amazon\SessionManagerPlugin\bin\;C:\Program Files\Amazon\AWSSAMCLI\bin\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\LLVM\bin;C:\Users\runneradmin\.dotnet\tools;C:\Users\runneradmin\.cargo\bin;C:\Users\runneradmin\AppData\Local\Microsoft\WindowsApps;C:\Program Files (x86)\Microsoft Visual Studio\Installer;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\VC\Linux\bin\ConnectionManagerExe;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\vcpkg
-2025-07-02T04:42:46.0768936Z   Platform: x64
-2025-07-02T04:42:46.0769145Z   UCRTVersion: 10.0.26100.0
-2025-07-02T04:42:46.0769449Z   UniversalCRTSdkDir: C:\Program Files (x86)\Windows Kits\10\
-2025-07-02T04:42:46.0769960Z   VCIDEInstallDir: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\VC\
-2025-07-02T04:42:46.0770511Z   VCINSTALLDIR: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\
-2025-07-02T04:42:46.0771014Z   VCPKG_ROOT: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\vcpkg
-2025-07-02T04:42:46.0771602Z   VCToolsInstallDir: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\
-2025-07-02T04:42:46.0772299Z   VCToolsRedistDir: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.44.35112\
-2025-07-02T04:42:46.0772775Z   VCToolsVersion: 14.44.35207
-2025-07-02T04:42:46.0772997Z   VisualStudioVersion: 17.0
-2025-07-02T04:42:46.0773378Z   VS170COMNTOOLS: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\
-2025-07-02T04:42:46.0773797Z   VSCMD_ARG_app_plat: Desktop
-2025-07-02T04:42:46.0774018Z   VSCMD_ARG_HOST_ARCH: x64
-2025-07-02T04:42:46.0774218Z   VSCMD_ARG_TGT_ARCH: x64
-2025-07-02T04:42:46.0774416Z   VSCMD_VER: 17.14.5
-2025-07-02T04:42:46.0774723Z   VSINSTALLDIR: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\
-2025-07-02T04:42:46.0775223Z   VSSDK150INSTALL: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VSSDK
-2025-07-02T04:42:46.0775733Z   VSSDKINSTALL: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VSSDK
-2025-07-02T04:42:46.0776441Z   WindowsLibPath: C:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.26100.0;C:\Program Files (x86)\Windows Kits\10\References\10.0.26100.0
-2025-07-02T04:42:46.0777249Z   WindowsSdkBinPath: C:\Program Files (x86)\Windows Kits\10\bin\
-2025-07-02T04:42:46.0777655Z   WindowsSdkDir: C:\Program Files (x86)\Windows Kits\10\
-2025-07-02T04:42:46.0777971Z   WindowsSDKLibVersion: 10.0.26100.0\
-2025-07-02T04:42:46.0778353Z   WindowsSdkVerBinPath: C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\
-2025-07-02T04:42:46.0778747Z   WindowsSDKVersion: 10.0.26100.0\
-2025-07-02T04:42:46.0779209Z   WindowsSDK_ExecutablePath_x64: C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\x64\
-2025-07-02T04:42:46.0779810Z   WindowsSDK_ExecutablePath_x86: C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\
-2025-07-02T04:42:46.0780209Z   __DOTNET_ADD_64BIT: 1
-2025-07-02T04:42:46.0780391Z   __DOTNET_PREFERRED_BITNESS: 64
-2025-07-02T04:42:46.0788204Z   __VSCMD_PREINIT_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin;C:\Program Files\MongoDB\Server\5.0\bin;C:\aliyun-cli;C:\vcpkg;C:\Program Files (x86)\NSIS\;C:\tools\zstd;C:\Program Files\Mercurial\;C:\hostedtoolcache\windows\stack\3.5.1\x64;C:\cabal\bin;C:\\ghcup\bin;C:\mingw64\bin;C:\Program Files\dotnet;C:\Program Files\MySQL\MySQL Server 8.0\bin;C:\Program Files\R\R-4.4.2\bin\x64;C:\SeleniumWebDrivers\GeckoDriver;C:\SeleniumWebDrivers\EdgeDriver\;C:\SeleniumWebDrivers\ChromeDriver;C:\Program Files (x86)\sbt\bin;C:\Program Files (x86)\GitHub CLI;C:\Program Files\Git\bin;C:\Program Files (x86)\pipx_bin;C:\npm\prefix;C:\hostedtoolcache\windows\go\1.24.4\x64\bin;C:\hostedtoolcache\windows\Python\3.9.13\x64\Scripts;C:\hostedtoolcache\windows\Python\3.9.13\x64;C:\hostedtoolcache\windows\Ruby\3.3.8\x64\bin;C:\Program Files\OpenSSL\bin;C:\tools\kotlinc\bin;C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\8.0.452-9\x64\bin;C:\Program Files\ImageMagick-7.1.1-Q16-HDRI;C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin;C:\ProgramData\kind;C:\ProgramData\Chocolatey\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\PowerShell\7\;C:\Program Files\Microsoft\Web Platform Installer\;C:\Program Files\TortoiseSVN\bin;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\WiX Toolset v3.14\bin;C:\Program Files\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files\Microsoft SQL Server\140\DTS\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;C:\Strawberry\c\bin;C:\Strawberry\perl\site\bin;C:\Strawberry\perl\bin;C:\ProgramData\chocolatey\lib\pulumi\tools\Pulumi\bin;C:\Program Files\CMake\bin;C:\ProgramData\chocolatey\lib\maven\apache-maven-3.9.10\bin;C:\Program Files\Microsoft Service Fabric\bin\Fabric\Fabric.Code;C:\Program Files\Microsoft SDKs\Service Fabric\Tools\ServiceFabricLocalClusterManager;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Program Files\GitHub CLI\;c:\tools\php;C:\Program Files (x86)\sbt\bin;C:\Program Files\Amazon\AWSCLIV2\;C:\Program Files\Amazon\SessionManagerPlugin\bin\;C:\Program Files\Amazon\AWSSAMCLI\bin\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\LLVM\bin;C:\Users\runneradmin\.dotnet\tools;C:\Users\runneradmin\.cargo\bin;C:\Users\runneradmin\AppData\Local\Microsoft\WindowsApps;C:\Program Files (x86)\Microsoft Visual Studio\Installer
-2025-07-02T04:42:46.0796406Z   BAKKESMODSDK: D:\a\CustomPlayerAnthems\CustomPlayerAnthems/BakkesModSDK-master
-2025-07-02T04:42:46.0796761Z ##[endgroup]
-2025-07-02T04:42:46.3288019Z 🔨 Building Custom Player Anthems BakkesMod Plugin...
-2025-07-02T04:42:50.2361859Z MSBuild version 17.14.10+8b8e13593 for .NET Framework
-2025-07-02T04:42:51.5068569Z 
-2025-07-02T04:42:56.3819232Z   pch.cpp
-2025-07-02T04:43:03.0884852Z   GuiBase.cpp
-2025-07-02T04:43:03.1151512Z   MyBakkesModPlugin.cpp
-2025-07-02T04:43:04.3378852Z D:\a\CustomPlayerAnthems\CustomPlayerAnthems\BakkesModSDK-master\PluginFiles\CustomPlayerAnthems\MyBakkesModPlugin.h(7,10): error C1083: Cannot open include file: 'bakkesmod/wrappers/HUDWrapper.h': No such file or directory [D:\a\CustomPlayerAnthems\CustomPlayerAnthems\BakkesModSDK-master\PluginFiles\CustomPlayerAnthems\CustomPlayerAnthems.vcxproj]
-2025-07-02T04:43:04.3451931Z   (compiling source file '/MyBakkesModPlugin.cpp')
-2025-07-02T04:43:04.3452413Z   
-2025-07-02T04:43:04.4341857Z ❌ Build failed with exit code: 1
-2025-07-02T04:43:04.4754839Z ##[error]Process completed with exit code 1.
+﻿2025-07-03T01:34:10.1178400Z ##[group]Run Write-Host "🔨 Building SoundBoard BakkesMod Plugin..."
+2025-07-03T01:34:10.1179152Z [36;1mWrite-Host "🔨 Building SoundBoard BakkesMod Plugin..."[0m
+2025-07-03T01:34:10.1179621Z [36;1mcd BakkesModSDK-master/PluginFiles/SoundBoardPlugin[0m
+2025-07-03T01:34:10.1179910Z [36;1m[0m
+2025-07-03T01:34:10.1180108Z [36;1m# Build with comprehensive error handling[0m
+2025-07-03T01:34:10.1180361Z [36;1mtry {[0m
+2025-07-03T01:34:10.1181061Z [36;1m  msbuild SoundBoardPlugin.vcxproj /p:Configuration=Release /p:Platform=x64 /p:PreferredToolArchitecture=x64 /m /v:minimal[0m
+2025-07-03T01:34:10.1181577Z [36;1m  [0m
+2025-07-03T01:34:10.1181953Z [36;1m  if ($LASTEXITCODE -eq 0) {[0m
+2025-07-03T01:34:10.1182236Z [36;1m    Write-Host "✅ Build completed successfully!"[0m
+2025-07-03T01:34:10.1182595Z [36;1m    echo "BUILD_SUCCESS=true" >> $env:GITHUB_OUTPUT[0m
+2025-07-03T01:34:10.1183010Z [36;1m    [0m
+2025-07-03T01:34:10.1183278Z [36;1m    # Verify output files[0m
+2025-07-03T01:34:10.1183681Z [36;1m    if (Test-Path "Release/SoundBoardPlugin.dll") {[0m
+2025-07-03T01:34:10.1184043Z [36;1m      Write-Host "✅ SoundBoardPlugin.dll generated successfully"[0m
+2025-07-03T01:34:10.1184673Z [36;1m      $dllSize = (Get-Item "Release/SoundBoardPlugin.dll").Length[0m
+2025-07-03T01:34:10.1185004Z [36;1m      Write-Host "📦 DLL Size: $dllSize bytes"[0m
+2025-07-03T01:34:10.1185253Z [36;1m    } else {[0m
+2025-07-03T01:34:10.1185584Z [36;1m      Write-Host "❌ ERROR: SoundBoardPlugin.dll not found after build!"[0m
+2025-07-03T01:34:10.1186153Z [36;1m      echo "BUILD_SUCCESS=false" >> $env:GITHUB_OUTPUT[0m
+2025-07-03T01:34:10.1186436Z [36;1m      exit 1[0m
+2025-07-03T01:34:10.1186607Z [36;1m    }[0m
+2025-07-03T01:34:10.1186760Z [36;1m  } else {[0m
+2025-07-03T01:34:10.1187072Z [36;1m    Write-Host "❌ Build failed with exit code: $LASTEXITCODE"[0m
+2025-07-03T01:34:10.1187600Z [36;1m    echo "BUILD_SUCCESS=false" >> $env:GITHUB_OUTPUT[0m
+2025-07-03T01:34:10.1187861Z [36;1m    exit 1[0m
+2025-07-03T01:34:10.1188029Z [36;1m  }[0m
+2025-07-03T01:34:10.1188173Z [36;1m} catch {[0m
+2025-07-03T01:34:10.1188390Z [36;1m  Write-Host "❌ Build failed with exception: $_"[0m
+2025-07-03T01:34:10.1188864Z [36;1m  echo "BUILD_SUCCESS=false" >> $env:GITHUB_OUTPUT[0m
+2025-07-03T01:34:10.1189182Z [36;1m  exit 1[0m
+2025-07-03T01:34:10.1189332Z [36;1m}[0m
+2025-07-03T01:34:10.1220404Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-07-03T01:34:10.1220734Z env:
+2025-07-03T01:34:10.1220899Z   CommandPromptType: Native
+2025-07-03T01:34:10.1221240Z   DevEnvDir: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\
+2025-07-03T01:34:10.1221737Z   ExtensionSdkDir: C:\Program Files (x86)\Microsoft SDKs\Windows Kits\10\ExtensionSDKs
+2025-07-03T01:34:10.1224483Z   EXTERNAL_INCLUDE: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\ATLMFC\include;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\VS\include;C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um
+2025-07-03T01:34:10.1226421Z   Framework40Version: v4.0
+2025-07-03T01:34:10.1226670Z   FrameworkDir: C:\Windows\Microsoft.NET\Framework64\
+2025-07-03T01:34:10.1227003Z   FrameworkDir64: C:\Windows\Microsoft.NET\Framework64\
+2025-07-03T01:34:10.1227279Z   FrameworkVersion: v4.0.30319
+2025-07-03T01:34:10.1227494Z   FrameworkVersion64: v4.0.30319
+2025-07-03T01:34:10.1227987Z   FSHARPINSTALLDIR: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\FSharp\Tools
+2025-07-03T01:34:10.1230031Z   HTMLHelpDir: C:\Program Files (x86)\HTML Help Workshop
+2025-07-03T01:34:10.1230485Z   IFCPATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\ifc\x64
+2025-07-03T01:34:10.1232533Z   INCLUDE: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\ATLMFC\include;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\VS\include;C:\Program Files (x86)\Windows Kits\10\include\10.0.26100.0\ucrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\um;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\shared;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\winrt;C:\Program Files (x86)\Windows Kits\10\\include\10.0.26100.0\\cppwinrt;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um
+2025-07-03T01:34:10.1234580Z   is_x64_arch: true
+2025-07-03T01:34:10.1235637Z   LIB: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\ATLMFC\lib\x64;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\lib\x64;C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\lib\um\x64;C:\Program Files (x86)\Windows Kits\10\lib\10.0.26100.0\ucrt\x64;C:\Program Files (x86)\Windows Kits\10\\lib\10.0.26100.0\\um\x64
+2025-07-03T01:34:10.1237953Z   LIBPATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\ATLMFC\lib\x64;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\lib\x64;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\lib\x86\store\references;C:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.26100.0;C:\Program Files (x86)\Windows Kits\10\References\10.0.26100.0;C:\Windows\Microsoft.NET\Framework64\v4.0.30319
+2025-07-03T01:34:10.1239458Z   NETFXSDKDir: C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\
+2025-07-03T01:34:10.1252475Z   Path: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\VC\VCPackages;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\bin\Roslyn;C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\x64\;C:\Program Files (x86)\HTML Help Workshop;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\FSharp\Tools;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Team Tools\DiagnosticsHub\Collector;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\Llvm\x64\bin;C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\\x64;C:\Program Files (x86)\Windows Kits\10\bin\\x64;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\\MSBuild\Current\Bin\amd64;C:\Windows\Microsoft.NET\Framework64\v4.0.30319;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin;C:\Program Files\MongoDB\Server\5.0\bin;C:\aliyun-cli;C:\vcpkg;C:\Program Files (x86)\NSIS\;C:\tools\zstd;C:\Program Files\Mercurial\;C:\hostedtoolcache\windows\stack\3.5.1\x64;C:\cabal\bin;C:\\ghcup\bin;C:\mingw64\bin;C:\Program Files\dotnet;C:\Program Files\MySQL\MySQL Server 8.0\bin;C:\Program Files\R\R-4.4.2\bin\x64;C:\SeleniumWebDrivers\GeckoDriver;C:\SeleniumWebDrivers\EdgeDriver\;C:\SeleniumWebDrivers\ChromeDriver;C:\Program Files (x86)\sbt\bin;C:\Program Files (x86)\GitHub CLI;C:\Program Files\Git\bin;C:\Program Files (x86)\pipx_bin;C:\npm\prefix;C:\hostedtoolcache\windows\go\1.24.4\x64\bin;C:\hostedtoolcache\windows\Python\3.9.13\x64\Scripts;C:\hostedtoolcache\windows\Python\3.9.13\x64;C:\hostedtoolcache\windows\Ruby\3.3.8\x64\bin;C:\Program Files\OpenSSL\bin;C:\tools\kotlinc\bin;C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\8.0.452-9\x64\bin;C:\Program Files\ImageMagick-7.1.1-Q16-HDRI;C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin;C:\ProgramData\kind;C:\ProgramData\Chocolatey\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\PowerShell\7\;C:\Program Files\Microsoft\Web Platform Installer\;C:\Program Files\TortoiseSVN\bin;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\WiX Toolset v3.14\bin;C:\Program Files\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files\Microsoft SQL Server\140\DTS\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;C:\Strawberry\c\bin;C:\Strawberry\perl\site\bin;C:\Strawberry\perl\bin;C:\ProgramData\chocolatey\lib\pulumi\tools\Pulumi\bin;C:\Program Files\CMake\bin;C:\ProgramData\chocolatey\lib\maven\apache-maven-3.9.10\bin;C:\Program Files\Microsoft Service Fabric\bin\Fabric\Fabric.Code;C:\Program Files\Microsoft SDKs\Service Fabric\Tools\ServiceFabricLocalClusterManager;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Program Files\GitHub CLI\;c:\tools\php;C:\Program Files\Amazon\AWSCLIV2\;C:\Program Files\Amazon\SessionManagerPlugin\bin\;C:\Program Files\Amazon\AWSSAMCLI\bin\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\LLVM\bin;C:\Users\runneradmin\.dotnet\tools;C:\Users\runneradmin\.cargo\bin;C:\Users\runneradmin\AppData\Local\Microsoft\WindowsApps;C:\Program Files (x86)\Microsoft Visual Studio\Installer;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\VC\Linux\bin\ConnectionManagerExe;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\vcpkg
+2025-07-03T01:34:10.1266217Z   Platform: x64
+2025-07-03T01:34:10.1266392Z   UCRTVersion: 10.0.26100.0
+2025-07-03T01:34:10.1266668Z   UniversalCRTSdkDir: C:\Program Files (x86)\Windows Kits\10\
+2025-07-03T01:34:10.1267111Z   VCIDEInstallDir: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\VC\
+2025-07-03T01:34:10.1267594Z   VCINSTALLDIR: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\
+2025-07-03T01:34:10.1268022Z   VCPKG_ROOT: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\vcpkg
+2025-07-03T01:34:10.1268536Z   VCToolsInstallDir: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\
+2025-07-03T01:34:10.1269178Z   VCToolsRedistDir: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Redist\MSVC\14.44.35112\
+2025-07-03T01:34:10.1269587Z   VCToolsVersion: 14.44.35207
+2025-07-03T01:34:10.1269790Z   VisualStudioVersion: 17.0
+2025-07-03T01:34:10.1270127Z   VS170COMNTOOLS: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\
+2025-07-03T01:34:10.1270485Z   VSCMD_ARG_app_plat: Desktop
+2025-07-03T01:34:10.1270684Z   VSCMD_ARG_HOST_ARCH: x64
+2025-07-03T01:34:10.1270872Z   VSCMD_ARG_TGT_ARCH: x64
+2025-07-03T01:34:10.1271042Z   VSCMD_VER: 17.14.5
+2025-07-03T01:34:10.1271318Z   VSINSTALLDIR: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\
+2025-07-03T01:34:10.1271756Z   VSSDK150INSTALL: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VSSDK
+2025-07-03T01:34:10.1272200Z   VSSDKINSTALL: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VSSDK
+2025-07-03T01:34:10.1272804Z   WindowsLibPath: C:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.26100.0;C:\Program Files (x86)\Windows Kits\10\References\10.0.26100.0
+2025-07-03T01:34:10.1273474Z   WindowsSdkBinPath: C:\Program Files (x86)\Windows Kits\10\bin\
+2025-07-03T01:34:10.1273821Z   WindowsSdkDir: C:\Program Files (x86)\Windows Kits\10\
+2025-07-03T01:34:10.1274097Z   WindowsSDKLibVersion: 10.0.26100.0\
+2025-07-03T01:34:10.1274425Z   WindowsSdkVerBinPath: C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\
+2025-07-03T01:34:10.1274766Z   WindowsSDKVersion: 10.0.26100.0\
+2025-07-03T01:34:10.1275176Z   WindowsSDK_ExecutablePath_x64: C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\x64\
+2025-07-03T01:34:10.1275858Z   WindowsSDK_ExecutablePath_x86: C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\
+2025-07-03T01:34:10.1276259Z   __DOTNET_ADD_64BIT: 1
+2025-07-03T01:34:10.1276446Z   __DOTNET_PREFERRED_BITNESS: 64
+2025-07-03T01:34:10.1284248Z   __VSCMD_PREINIT_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin;C:\Program Files\MongoDB\Server\5.0\bin;C:\aliyun-cli;C:\vcpkg;C:\Program Files (x86)\NSIS\;C:\tools\zstd;C:\Program Files\Mercurial\;C:\hostedtoolcache\windows\stack\3.5.1\x64;C:\cabal\bin;C:\\ghcup\bin;C:\mingw64\bin;C:\Program Files\dotnet;C:\Program Files\MySQL\MySQL Server 8.0\bin;C:\Program Files\R\R-4.4.2\bin\x64;C:\SeleniumWebDrivers\GeckoDriver;C:\SeleniumWebDrivers\EdgeDriver\;C:\SeleniumWebDrivers\ChromeDriver;C:\Program Files (x86)\sbt\bin;C:\Program Files (x86)\GitHub CLI;C:\Program Files\Git\bin;C:\Program Files (x86)\pipx_bin;C:\npm\prefix;C:\hostedtoolcache\windows\go\1.24.4\x64\bin;C:\hostedtoolcache\windows\Python\3.9.13\x64\Scripts;C:\hostedtoolcache\windows\Python\3.9.13\x64;C:\hostedtoolcache\windows\Ruby\3.3.8\x64\bin;C:\Program Files\OpenSSL\bin;C:\tools\kotlinc\bin;C:\hostedtoolcache\windows\Java_Temurin-Hotspot_jdk\8.0.452-9\x64\bin;C:\Program Files\ImageMagick-7.1.1-Q16-HDRI;C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin;C:\ProgramData\kind;C:\ProgramData\Chocolatey\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files\PowerShell\7\;C:\Program Files\Microsoft\Web Platform Installer\;C:\Program Files\TortoiseSVN\bin;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\WiX Toolset v3.14\bin;C:\Program Files\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files\Microsoft SQL Server\140\DTS\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Microsoft SQL Server\160\DTS\Binn\;C:\Strawberry\c\bin;C:\Strawberry\perl\site\bin;C:\Strawberry\perl\bin;C:\ProgramData\chocolatey\lib\pulumi\tools\Pulumi\bin;C:\Program Files\CMake\bin;C:\ProgramData\chocolatey\lib\maven\apache-maven-3.9.10\bin;C:\Program Files\Microsoft Service Fabric\bin\Fabric\Fabric.Code;C:\Program Files\Microsoft SDKs\Service Fabric\Tools\ServiceFabricLocalClusterManager;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Program Files\GitHub CLI\;c:\tools\php;C:\Program Files (x86)\sbt\bin;C:\Program Files\Amazon\AWSCLIV2\;C:\Program Files\Amazon\SessionManagerPlugin\bin\;C:\Program Files\Amazon\AWSSAMCLI\bin\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\LLVM\bin;C:\Users\runneradmin\.dotnet\tools;C:\Users\runneradmin\.cargo\bin;C:\Users\runneradmin\AppData\Local\Microsoft\WindowsApps;C:\Program Files (x86)\Microsoft Visual Studio\Installer
+2025-07-03T01:34:10.1292308Z   BAKKESMODSDK: D:\a\rl-soundboard\rl-soundboard/BakkesModSDK-master
+2025-07-03T01:34:10.1292611Z ##[endgroup]
+2025-07-03T01:34:10.3880704Z 🔨 Building SoundBoard BakkesMod Plugin...
+2025-07-03T01:34:13.6040858Z MSBuild version 17.14.10+8b8e13593 for .NET Framework
+2025-07-03T01:34:14.5687979Z 
+2025-07-03T01:34:18.3510695Z   pch.cpp
+2025-07-03T01:34:24.2473151Z   GuiBase.cpp
+2025-07-03T01:34:24.2725532Z   SoundBoardPlugin.cpp
+2025-07-03T01:34:25.8368978Z C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\minwindef.h(250,1): warning C4099: 'HINSTANCE__': type name first seen using 'class' now seen using 'struct' [D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.vcxproj]
+2025-07-03T01:34:25.8497211Z   (compiling source file '/SoundBoardPlugin.cpp')
+2025-07-03T01:34:25.8497941Z       C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\minwindef.h(250,1):
+2025-07-03T01:34:25.8498406Z       see declaration of 'HINSTANCE__'
+2025-07-03T01:34:25.8498947Z   
+2025-07-03T01:34:25.9470871Z D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(28,5): error C2679: binary '=': no operator found which takes a right-hand operand of type 'CVarWrapper' (or there is no acceptable conversion) [D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.vcxproj]
+2025-07-03T01:34:25.9473380Z   (compiling source file '/SoundBoardPlugin.cpp')
+2025-07-03T01:34:25.9474188Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1704,17):
+2025-07-03T01:34:25.9480432Z       could be 'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<CVarWrapper> &&) noexcept'
+2025-07-03T01:34:25.9481820Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(28,5):
+2025-07-03T01:34:25.9483528Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<CVarWrapper> &&) noexcept': cannot convert argument 2 from 'CVarWrapper' to 'std::shared_ptr<CVarWrapper> &&'
+2025-07-03T01:34:25.9485286Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(28,46):
+2025-07-03T01:34:25.9486383Z               Reason: cannot convert from 'CVarWrapper' to 'std::shared_ptr<CVarWrapper>'
+2025-07-03T01:34:25.9487498Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(28,46):
+2025-07-03T01:34:25.9488841Z               No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+2025-07-03T01:34:25.9490096Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1693,17):
+2025-07-03T01:34:25.9491327Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<CVarWrapper> &) noexcept'
+2025-07-03T01:34:25.9492668Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(28,5):
+2025-07-03T01:34:25.9494462Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<CVarWrapper> &) noexcept': cannot convert argument 2 from 'CVarWrapper' to 'const std::shared_ptr<CVarWrapper> &'
+2025-07-03T01:34:25.9496296Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(28,46):
+2025-07-03T01:34:25.9497459Z               Reason: cannot convert from 'CVarWrapper' to 'const std::shared_ptr<CVarWrapper>'
+2025-07-03T01:34:25.9498564Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(28,46):
+2025-07-03T01:34:25.9499875Z               No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+2025-07-03T01:34:25.9501099Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1727,17):
+2025-07-03T01:34:25.9502246Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::unique_ptr<_Ux,_Dx> &&)'
+2025-07-03T01:34:25.9503433Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(28,5):
+2025-07-03T01:34:25.9506667Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::unique_ptr<_Ux,_Dx> &&)': could not deduce template argument for 'std::unique_ptr<_Ux,_Dx> &&' from 'CVarWrapper'
+2025-07-03T01:34:25.9508223Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1710,17):
+2025-07-03T01:34:25.9509421Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<_Ty2> &&) noexcept'
+2025-07-03T01:34:25.9510666Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(28,5):
+2025-07-03T01:34:25.9512674Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<_Ty2> &&) noexcept': could not deduce template argument for 'std::shared_ptr<_Ty2> &&' from 'CVarWrapper'
+2025-07-03T01:34:25.9514304Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1699,17):
+2025-07-03T01:34:25.9515515Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<_Ty2> &) noexcept'
+2025-07-03T01:34:25.9516733Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(28,5):
+2025-07-03T01:34:25.9518458Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<_Ty2> &) noexcept': could not deduce template argument for 'const std::shared_ptr<_Ty2> &' from 'CVarWrapper'
+2025-07-03T01:34:25.9520161Z       D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(28,5):
+2025-07-03T01:34:25.9521276Z       while trying to match the argument list '(std::shared_ptr<CVarWrapper>, CVarWrapper)'
+2025-07-03T01:34:25.9521905Z   
+2025-07-03T01:34:25.9523977Z D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(29,5): error C2679: binary '=': no operator found which takes a right-hand operand of type 'CVarWrapper' (or there is no acceptable conversion) [D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.vcxproj]
+2025-07-03T01:34:25.9526366Z   (compiling source file '/SoundBoardPlugin.cpp')
+2025-07-03T01:34:25.9527240Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1704,17):
+2025-07-03T01:34:25.9528527Z       could be 'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<CVarWrapper> &&) noexcept'
+2025-07-03T01:34:25.9529887Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(29,5):
+2025-07-03T01:34:25.9531651Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<CVarWrapper> &&) noexcept': cannot convert argument 2 from 'CVarWrapper' to 'std::shared_ptr<CVarWrapper> &&'
+2025-07-03T01:34:25.9533422Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(29,46):
+2025-07-03T01:34:25.9534506Z               Reason: cannot convert from 'CVarWrapper' to 'std::shared_ptr<CVarWrapper>'
+2025-07-03T01:34:25.9535529Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(29,46):
+2025-07-03T01:34:25.9536825Z               No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+2025-07-03T01:34:25.9538041Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1693,17):
+2025-07-03T01:34:25.9539307Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<CVarWrapper> &) noexcept'
+2025-07-03T01:34:25.9540644Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(29,5):
+2025-07-03T01:34:25.9542767Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<CVarWrapper> &) noexcept': cannot convert argument 2 from 'CVarWrapper' to 'const std::shared_ptr<CVarWrapper> &'
+2025-07-03T01:34:25.9544619Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(29,46):
+2025-07-03T01:34:25.9545779Z               Reason: cannot convert from 'CVarWrapper' to 'const std::shared_ptr<CVarWrapper>'
+2025-07-03T01:34:25.9547163Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(29,46):
+2025-07-03T01:34:25.9548523Z               No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+2025-07-03T01:34:25.9549790Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1727,17):
+2025-07-03T01:34:25.9550983Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::unique_ptr<_Ux,_Dx> &&)'
+2025-07-03T01:34:25.9552194Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(29,5):
+2025-07-03T01:34:25.9553839Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::unique_ptr<_Ux,_Dx> &&)': could not deduce template argument for 'std::unique_ptr<_Ux,_Dx> &&' from 'CVarWrapper'
+2025-07-03T01:34:25.9555559Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1710,17):
+2025-07-03T01:34:25.9556773Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<_Ty2> &&) noexcept'
+2025-07-03T01:34:25.9557995Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(29,5):
+2025-07-03T01:34:25.9559661Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<_Ty2> &&) noexcept': could not deduce template argument for 'std::shared_ptr<_Ty2> &&' from 'CVarWrapper'
+2025-07-03T01:34:25.9561269Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1699,17):
+2025-07-03T01:34:25.9562507Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<_Ty2> &) noexcept'
+2025-07-03T01:34:25.9563798Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(29,5):
+2025-07-03T01:34:25.9565595Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<_Ty2> &) noexcept': could not deduce template argument for 'const std::shared_ptr<_Ty2> &' from 'CVarWrapper'
+2025-07-03T01:34:25.9567370Z       D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(29,5):
+2025-07-03T01:34:25.9568533Z       while trying to match the argument list '(std::shared_ptr<CVarWrapper>, CVarWrapper)'
+2025-07-03T01:34:25.9569179Z   
+2025-07-03T01:34:25.9571342Z D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(30,5): error C2679: binary '=': no operator found which takes a right-hand operand of type 'CVarWrapper' (or there is no acceptable conversion) [D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.vcxproj]
+2025-07-03T01:34:25.9573700Z   (compiling source file '/SoundBoardPlugin.cpp')
+2025-07-03T01:34:25.9574500Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1704,17):
+2025-07-03T01:34:25.9575691Z       could be 'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<CVarWrapper> &&) noexcept'
+2025-07-03T01:34:25.9576882Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(30,5):
+2025-07-03T01:34:25.9578810Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<CVarWrapper> &&) noexcept': cannot convert argument 2 from 'CVarWrapper' to 'std::shared_ptr<CVarWrapper> &&'
+2025-07-03T01:34:25.9580603Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(30,52):
+2025-07-03T01:34:25.9581746Z               Reason: cannot convert from 'CVarWrapper' to 'std::shared_ptr<CVarWrapper>'
+2025-07-03T01:34:25.9583103Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(30,52):
+2025-07-03T01:34:25.9584458Z               No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+2025-07-03T01:34:25.9585712Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1693,17):
+2025-07-03T01:34:25.9586997Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<CVarWrapper> &) noexcept'
+2025-07-03T01:34:25.9588341Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(30,5):
+2025-07-03T01:34:25.9590156Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<CVarWrapper> &) noexcept': cannot convert argument 2 from 'CVarWrapper' to 'const std::shared_ptr<CVarWrapper> &'
+2025-07-03T01:34:25.9591979Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(30,52):
+2025-07-03T01:34:25.9593121Z               Reason: cannot convert from 'CVarWrapper' to 'const std::shared_ptr<CVarWrapper>'
+2025-07-03T01:34:25.9594242Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(30,52):
+2025-07-03T01:34:25.9595603Z               No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+2025-07-03T01:34:25.9596889Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1727,17):
+2025-07-03T01:34:25.9598059Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::unique_ptr<_Ux,_Dx> &&)'
+2025-07-03T01:34:25.9599281Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(30,5):
+2025-07-03T01:34:25.9601063Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::unique_ptr<_Ux,_Dx> &&)': could not deduce template argument for 'std::unique_ptr<_Ux,_Dx> &&' from 'CVarWrapper'
+2025-07-03T01:34:25.9602640Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1710,17):
+2025-07-03T01:34:25.9603859Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<_Ty2> &&) noexcept'
+2025-07-03T01:34:25.9605131Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(30,5):
+2025-07-03T01:34:25.9606836Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<_Ty2> &&) noexcept': could not deduce template argument for 'std::shared_ptr<_Ty2> &&' from 'CVarWrapper'
+2025-07-03T01:34:25.9608452Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1699,17):
+2025-07-03T01:34:25.9609680Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<_Ty2> &) noexcept'
+2025-07-03T01:34:25.9610955Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(30,5):
+2025-07-03T01:34:25.9612735Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<_Ty2> &) noexcept': could not deduce template argument for 'const std::shared_ptr<_Ty2> &' from 'CVarWrapper'
+2025-07-03T01:34:25.9614810Z       D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(30,5):
+2025-07-03T01:34:25.9615985Z       while trying to match the argument list '(std::shared_ptr<CVarWrapper>, CVarWrapper)'
+2025-07-03T01:34:25.9616639Z   
+2025-07-03T01:34:25.9618778Z D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(31,5): error C2679: binary '=': no operator found which takes a right-hand operand of type 'CVarWrapper' (or there is no acceptable conversion) [D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.vcxproj]
+2025-07-03T01:34:25.9621355Z   (compiling source file '/SoundBoardPlugin.cpp')
+2025-07-03T01:34:25.9622202Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1704,17):
+2025-07-03T01:34:25.9623464Z       could be 'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<CVarWrapper> &&) noexcept'
+2025-07-03T01:34:25.9624797Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(31,5):
+2025-07-03T01:34:25.9626499Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<CVarWrapper> &&) noexcept': cannot convert argument 2 from 'CVarWrapper' to 'std::shared_ptr<CVarWrapper> &&'
+2025-07-03T01:34:25.9628169Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(31,45):
+2025-07-03T01:34:25.9629147Z               Reason: cannot convert from 'CVarWrapper' to 'std::shared_ptr<CVarWrapper>'
+2025-07-03T01:34:25.9630104Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(31,45):
+2025-07-03T01:34:25.9631370Z               No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+2025-07-03T01:34:25.9632597Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1693,17):
+2025-07-03T01:34:25.9633861Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<CVarWrapper> &) noexcept'
+2025-07-03T01:34:25.9635173Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(31,5):
+2025-07-03T01:34:25.9636951Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<CVarWrapper> &) noexcept': cannot convert argument 2 from 'CVarWrapper' to 'const std::shared_ptr<CVarWrapper> &'
+2025-07-03T01:34:25.9638720Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(31,45):
+2025-07-03T01:34:25.9639852Z               Reason: cannot convert from 'CVarWrapper' to 'const std::shared_ptr<CVarWrapper>'
+2025-07-03T01:34:25.9641039Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(31,45):
+2025-07-03T01:34:25.9642327Z               No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+2025-07-03T01:34:25.9643559Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1727,17):
+2025-07-03T01:34:25.9644718Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::unique_ptr<_Ux,_Dx> &&)'
+2025-07-03T01:34:25.9645922Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(31,5):
+2025-07-03T01:34:25.9647555Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::unique_ptr<_Ux,_Dx> &&)': could not deduce template argument for 'std::unique_ptr<_Ux,_Dx> &&' from 'CVarWrapper'
+2025-07-03T01:34:25.9650267Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1710,17):
+2025-07-03T01:34:25.9651494Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<_Ty2> &&) noexcept'
+2025-07-03T01:34:25.9652712Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(31,5):
+2025-07-03T01:34:25.9654466Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<_Ty2> &&) noexcept': could not deduce template argument for 'std::shared_ptr<_Ty2> &&' from 'CVarWrapper'
+2025-07-03T01:34:25.9656286Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1699,17):
+2025-07-03T01:34:25.9657512Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<_Ty2> &) noexcept'
+2025-07-03T01:34:25.9658771Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(31,5):
+2025-07-03T01:34:25.9660502Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<_Ty2> &) noexcept': could not deduce template argument for 'const std::shared_ptr<_Ty2> &' from 'CVarWrapper'
+2025-07-03T01:34:25.9662219Z       D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(31,5):
+2025-07-03T01:34:25.9663370Z       while trying to match the argument list '(std::shared_ptr<CVarWrapper>, CVarWrapper)'
+2025-07-03T01:34:25.9664002Z   
+2025-07-03T01:34:25.9666097Z D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(32,5): error C2679: binary '=': no operator found which takes a right-hand operand of type 'CVarWrapper' (or there is no acceptable conversion) [D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.vcxproj]
+2025-07-03T01:34:25.9668518Z   (compiling source file '/SoundBoardPlugin.cpp')
+2025-07-03T01:34:25.9669396Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1704,17):
+2025-07-03T01:34:25.9670663Z       could be 'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<CVarWrapper> &&) noexcept'
+2025-07-03T01:34:25.9671972Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(32,5):
+2025-07-03T01:34:25.9673740Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<CVarWrapper> &&) noexcept': cannot convert argument 2 from 'CVarWrapper' to 'std::shared_ptr<CVarWrapper> &&'
+2025-07-03T01:34:25.9675485Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(32,52):
+2025-07-03T01:34:25.9676612Z               Reason: cannot convert from 'CVarWrapper' to 'std::shared_ptr<CVarWrapper>'
+2025-07-03T01:34:25.9677688Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(32,52):
+2025-07-03T01:34:25.9679013Z               No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+2025-07-03T01:34:25.9680309Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1693,17):
+2025-07-03T01:34:25.9681576Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<CVarWrapper> &) noexcept'
+2025-07-03T01:34:25.9682905Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(32,5):
+2025-07-03T01:34:25.9684705Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<CVarWrapper> &) noexcept': cannot convert argument 2 from 'CVarWrapper' to 'const std::shared_ptr<CVarWrapper> &'
+2025-07-03T01:34:25.9686731Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(32,52):
+2025-07-03T01:34:25.9687872Z               Reason: cannot convert from 'CVarWrapper' to 'const std::shared_ptr<CVarWrapper>'
+2025-07-03T01:34:25.9688963Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(32,52):
+2025-07-03T01:34:25.9690281Z               No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+2025-07-03T01:34:25.9692661Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1727,17):
+2025-07-03T01:34:25.9693818Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::unique_ptr<_Ux,_Dx> &&)'
+2025-07-03T01:34:25.9694993Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(32,5):
+2025-07-03T01:34:25.9696611Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::unique_ptr<_Ux,_Dx> &&)': could not deduce template argument for 'std::unique_ptr<_Ux,_Dx> &&' from 'CVarWrapper'
+2025-07-03T01:34:25.9698121Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1710,17):
+2025-07-03T01:34:25.9699293Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<_Ty2> &&) noexcept'
+2025-07-03T01:34:25.9700558Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(32,5):
+2025-07-03T01:34:25.9702246Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<_Ty2> &&) noexcept': could not deduce template argument for 'std::shared_ptr<_Ty2> &&' from 'CVarWrapper'
+2025-07-03T01:34:25.9703853Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1699,17):
+2025-07-03T01:34:25.9705043Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<_Ty2> &) noexcept'
+2025-07-03T01:34:25.9706301Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(32,5):
+2025-07-03T01:34:25.9707982Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<_Ty2> &) noexcept': could not deduce template argument for 'const std::shared_ptr<_Ty2> &' from 'CVarWrapper'
+2025-07-03T01:34:25.9709722Z       D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(32,5):
+2025-07-03T01:34:25.9711011Z       while trying to match the argument list '(std::shared_ptr<CVarWrapper>, CVarWrapper)'
+2025-07-03T01:34:25.9711682Z   
+2025-07-03T01:34:25.9713790Z D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(33,5): error C2679: binary '=': no operator found which takes a right-hand operand of type 'CVarWrapper' (or there is no acceptable conversion) [D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.vcxproj]
+2025-07-03T01:34:25.9716159Z   (compiling source file '/SoundBoardPlugin.cpp')
+2025-07-03T01:34:25.9717026Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1704,17):
+2025-07-03T01:34:25.9718309Z       could be 'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<CVarWrapper> &&) noexcept'
+2025-07-03T01:34:25.9719641Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(33,5):
+2025-07-03T01:34:25.9721387Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<CVarWrapper> &&) noexcept': cannot convert argument 2 from 'CVarWrapper' to 'std::shared_ptr<CVarWrapper> &&'
+2025-07-03T01:34:25.9723387Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(33,50):
+2025-07-03T01:34:25.9724500Z               Reason: cannot convert from 'CVarWrapper' to 'std::shared_ptr<CVarWrapper>'
+2025-07-03T01:34:25.9725575Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(33,50):
+2025-07-03T01:34:25.9726911Z               No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+2025-07-03T01:34:25.9728389Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1693,17):
+2025-07-03T01:34:25.9729655Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<CVarWrapper> &) noexcept'
+2025-07-03T01:34:25.9730982Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(33,5):
+2025-07-03T01:34:25.9732801Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<CVarWrapper> &) noexcept': cannot convert argument 2 from 'CVarWrapper' to 'const std::shared_ptr<CVarWrapper> &'
+2025-07-03T01:34:25.9734623Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(33,50):
+2025-07-03T01:34:25.9735776Z               Reason: cannot convert from 'CVarWrapper' to 'const std::shared_ptr<CVarWrapper>'
+2025-07-03T01:34:25.9736917Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(33,50):
+2025-07-03T01:34:25.9738258Z               No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+2025-07-03T01:34:25.9739520Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1727,17):
+2025-07-03T01:34:25.9740670Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::unique_ptr<_Ux,_Dx> &&)'
+2025-07-03T01:34:25.9741881Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(33,5):
+2025-07-03T01:34:25.9743505Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::unique_ptr<_Ux,_Dx> &&)': could not deduce template argument for 'std::unique_ptr<_Ux,_Dx> &&' from 'CVarWrapper'
+2025-07-03T01:34:25.9745093Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1710,17):
+2025-07-03T01:34:25.9746261Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<_Ty2> &&) noexcept'
+2025-07-03T01:34:25.9747510Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(33,5):
+2025-07-03T01:34:25.9749194Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<_Ty2> &&) noexcept': could not deduce template argument for 'std::shared_ptr<_Ty2> &&' from 'CVarWrapper'
+2025-07-03T01:34:25.9750786Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1699,17):
+2025-07-03T01:34:25.9751999Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<_Ty2> &) noexcept'
+2025-07-03T01:34:25.9753262Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(33,5):
+2025-07-03T01:34:25.9755001Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<_Ty2> &) noexcept': could not deduce template argument for 'const std::shared_ptr<_Ty2> &' from 'CVarWrapper'
+2025-07-03T01:34:25.9756971Z       D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(33,5):
+2025-07-03T01:34:25.9758098Z       while trying to match the argument list '(std::shared_ptr<CVarWrapper>, CVarWrapper)'
+2025-07-03T01:34:25.9758745Z   
+2025-07-03T01:34:25.9760857Z D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(34,5): error C2679: binary '=': no operator found which takes a right-hand operand of type 'CVarWrapper' (or there is no acceptable conversion) [D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.vcxproj]
+2025-07-03T01:34:25.9763428Z   (compiling source file '/SoundBoardPlugin.cpp')
+2025-07-03T01:34:25.9764301Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1704,17):
+2025-07-03T01:34:25.9765545Z       could be 'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<CVarWrapper> &&) noexcept'
+2025-07-03T01:34:25.9766878Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(34,5):
+2025-07-03T01:34:25.9768586Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<CVarWrapper> &&) noexcept': cannot convert argument 2 from 'CVarWrapper' to 'std::shared_ptr<CVarWrapper> &&'
+2025-07-03T01:34:25.9770316Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(34,50):
+2025-07-03T01:34:25.9771429Z               Reason: cannot convert from 'CVarWrapper' to 'std::shared_ptr<CVarWrapper>'
+2025-07-03T01:34:25.9772515Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(34,50):
+2025-07-03T01:34:25.9773832Z               No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+2025-07-03T01:34:25.9775082Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1693,17):
+2025-07-03T01:34:25.9776341Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<CVarWrapper> &) noexcept'
+2025-07-03T01:34:25.9777629Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(34,5):
+2025-07-03T01:34:25.9779391Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<CVarWrapper> &) noexcept': cannot convert argument 2 from 'CVarWrapper' to 'const std::shared_ptr<CVarWrapper> &'
+2025-07-03T01:34:25.9781222Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(34,50):
+2025-07-03T01:34:25.9782360Z               Reason: cannot convert from 'CVarWrapper' to 'const std::shared_ptr<CVarWrapper>'
+2025-07-03T01:34:25.9783465Z               D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(34,50):
+2025-07-03T01:34:25.9784797Z               No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+2025-07-03T01:34:25.9786040Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1727,17):
+2025-07-03T01:34:25.9787188Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::unique_ptr<_Ux,_Dx> &&)'
+2025-07-03T01:34:25.9788427Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(34,5):
+2025-07-03T01:34:25.9790088Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::unique_ptr<_Ux,_Dx> &&)': could not deduce template argument for 'std::unique_ptr<_Ux,_Dx> &&' from 'CVarWrapper'
+2025-07-03T01:34:25.9791636Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1710,17):
+2025-07-03T01:34:25.9793059Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<_Ty2> &&) noexcept'
+2025-07-03T01:34:25.9794298Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(34,5):
+2025-07-03T01:34:25.9795977Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(std::shared_ptr<_Ty2> &&) noexcept': could not deduce template argument for 'std::shared_ptr<_Ty2> &&' from 'CVarWrapper'
+2025-07-03T01:34:25.9797555Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\memory(1699,17):
+2025-07-03T01:34:25.9799004Z       or       'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<_Ty2> &) noexcept'
+2025-07-03T01:34:25.9800285Z           D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(34,5):
+2025-07-03T01:34:25.9802009Z           'std::shared_ptr<CVarWrapper> &std::shared_ptr<CVarWrapper>::operator =(const std::shared_ptr<_Ty2> &) noexcept': could not deduce template argument for 'const std::shared_ptr<_Ty2> &' from 'CVarWrapper'
+2025-07-03T01:34:25.9803719Z       D:\a\rl-soundboard\rl-soundboard\BakkesModSDK-master\PluginFiles\SoundBoardPlugin\SoundBoardPlugin.cpp(34,5):
+2025-07-03T01:34:25.9804839Z       while trying to match the argument list '(std::shared_ptr<CVarWrapper>, CVarWrapper)'
+2025-07-03T01:34:25.9805474Z   
+2025-07-03T01:34:26.1285530Z ❌ Build failed with exit code: 1
+2025-07-03T01:34:26.1850058Z ##[error]Process completed with exit code 1.
