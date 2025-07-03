@@ -173,11 +173,10 @@ void SoundBoardPlugin::RenderSettings()
             ImGui::ProgressBar(updateInfo_.downloadProgress, ImVec2(-1, 0), "Downloading...");
         }
         
-        // Buttons - using older ImGui approach for compatibility
+        // Buttons - simple approach for older ImGui compatibility  
         bool buttonsDisabled = updateInfo_.checkingForUpdates || updateInfo_.downloadingUpdate;
         if (buttonsDisabled) {
-            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.5f);
         }
         
         if (ImGui::Button("🔍 Check for Updates", ImVec2(150, 0))) {
@@ -190,8 +189,7 @@ void SoundBoardPlugin::RenderSettings()
         
         bool updateButtonDisabled = !updateInfo_.updateAvailable || buttonsDisabled;
         if (updateButtonDisabled && !buttonsDisabled) {
-            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.5f);
         }
         
         if (ImGui::Button("⬇️ Download & Install", ImVec2(150, 0))) {
@@ -201,12 +199,10 @@ void SoundBoardPlugin::RenderSettings()
         }
         
         if (updateButtonDisabled && !buttonsDisabled) {
-            ImGui::PopItemFlag();
             ImGui::PopStyleVar();
         }
         
         if (buttonsDisabled) {
-            ImGui::PopItemFlag();
             ImGui::PopStyleVar();
         }
         
@@ -239,10 +235,9 @@ void SoundBoardPlugin::RenderWindow()
     
     ImGui::SameLine();
     
-    // Use older ImGui approach instead of BeginDisabled/EndDisabled
+    // Simple approach for older ImGui compatibility
     if (!updateInfo_.updateAvailable) {
-        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.5f);
     }
     
     if (ImGui::Button("⬇️ Update", ImVec2(100, 0))) {
@@ -252,7 +247,6 @@ void SoundBoardPlugin::RenderWindow()
     }
     
     if (!updateInfo_.updateAvailable) {
-        ImGui::PopItemFlag();
         ImGui::PopStyleVar();
     }
     
