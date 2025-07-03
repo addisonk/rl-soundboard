@@ -10,6 +10,8 @@
 #include <thread>
 #include <wininet.h>
 #pragma comment(lib, "wininet.lib")
+#include <shellapi.h>
+#pragma comment(lib, "shell32.lib")
 
 // GitHub Actions CI/CD Integration - Auto-builds and version management
 BAKKESMOD_PLUGIN(SoundBoardPlugin, "A soundboard plugin who plays custom sounds when game events", "1.3.0", PLUGINTYPE_FREEPLAY)
@@ -171,22 +173,42 @@ void SoundBoardPlugin::RenderSettings()
             ImGui::ProgressBar(updateInfo_.downloadProgress, ImVec2(-1, 0), "Downloading...");
         }
         
-        // Buttons
-        ImGui::BeginDisabled(updateInfo_.checkingForUpdates || updateInfo_.downloadingUpdate);
+        // Buttons - using older ImGui approach for compatibility
+        bool buttonsDisabled = updateInfo_.checkingForUpdates || updateInfo_.downloadingUpdate;
+        if (buttonsDisabled) {
+            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+        }
         
         if (ImGui::Button("🔍 Check for Updates", ImVec2(150, 0))) {
-            CheckForUpdates();
+            if (!buttonsDisabled) {
+                CheckForUpdates();
+            }
         }
         
         ImGui::SameLine();
         
-        ImGui::BeginDisabled(!updateInfo_.updateAvailable);
-        if (ImGui::Button("⬇️ Download & Install", ImVec2(150, 0))) {
-            DownloadAndInstallUpdate();
+        bool updateButtonDisabled = !updateInfo_.updateAvailable || buttonsDisabled;
+        if (updateButtonDisabled && !buttonsDisabled) {
+            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
         }
-        ImGui::EndDisabled();
         
-        ImGui::EndDisabled();
+        if (ImGui::Button("⬇️ Download & Install", ImVec2(150, 0))) {
+            if (!updateButtonDisabled) {
+                DownloadAndInstallUpdate();
+            }
+        }
+        
+        if (updateButtonDisabled && !buttonsDisabled) {
+            ImGui::PopItemFlag();
+            ImGui::PopStyleVar();
+        }
+        
+        if (buttonsDisabled) {
+            ImGui::PopItemFlag();
+            ImGui::PopStyleVar();
+        }
         
         if (ImGui::Button("📁 Open Plugins Folder", ImVec2(150, 0))) {
             std::string pluginsPath = gameWrapper->GetDataFolder() + "/../bakkesmod/plugins";
@@ -217,11 +239,22 @@ void SoundBoardPlugin::RenderWindow()
     
     ImGui::SameLine();
     
-    ImGui::BeginDisabled(!updateInfo_.updateAvailable);
-    if (ImGui::Button("⬇️ Update", ImVec2(100, 0))) {
-        DownloadAndInstallUpdate();
+    // Use older ImGui approach instead of BeginDisabled/EndDisabled
+    if (!updateInfo_.updateAvailable) {
+        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
     }
-    ImGui::EndDisabled();
+    
+    if (ImGui::Button("⬇️ Update", ImVec2(100, 0))) {
+        if (updateInfo_.updateAvailable) {
+            DownloadAndInstallUpdate();
+        }
+    }
+    
+    if (!updateInfo_.updateAvailable) {
+        ImGui::PopItemFlag();
+        ImGui::PopStyleVar();
+    }
     
     if (updateInfo_.updateAvailable) {
         ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Update available: %s", updateInfo_.latestVersion.c_str());
